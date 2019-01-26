@@ -1,5 +1,3 @@
-# Lesson 3
-
 [Video](https://youtu.be/PW2HKkzdkKY) / [Lesson Forum](https://forums.fast.ai/t/lesson-3-official-resources-and-updates/29732)
 
 A quick correction on citation. This chart originally cane from Andrew Ng's excellent machine learning course on Coursera. Apologies for the incorrect citation. 
@@ -18,7 +16,7 @@ As you can see, it's just a page. There's almost nothing to and it's free. It's 
 
 
 
-#### Examples of web apps people have built during the week [3:36](https://youtu.be/PW2HKkzdkKY?t=216)
+### Examples of web apps people have built during the week [3:36](https://youtu.be/PW2HKkzdkKY?t=216)
 
 Edward Ross built the what Australian car is that? app
 
@@ -42,7 +40,7 @@ Nice to see what people have been building in terms of both web apps and just cl
 
 
 
-### Multi-label classification with Planet Amazon dataset [9:51](https://youtu.be/PW2HKkzdkKY?t=591)
+## Multi-label classification with Planet Amazon dataset [9:51](https://youtu.be/PW2HKkzdkKY?t=591)
 
 [lesson3-planet.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson3-planet.ipynb)
 
@@ -52,7 +50,7 @@ The first one we're going to look at is a dataset of satellite images. Satellite
 
 It has satellite tiles and for each one, as you can see, there's a number of different labels for each tile. One of the labels always represents the weather (e.g. cloudy, partly_cloudy). And all of the other labels tell you any interesting features that are seen there. So primary means primary rainforest, agriculture means there's some farming, road means road, and so forth. As I am sure you can tell, this is a little different to all the classifiers we've seen so far because there's not just one label, there's potentially multiple labels. So multi-label classification can be done in a very similar way but the first thing we are going to need to do is to download the data.
 
-#### Downloading the data [11:02](https://youtu.be/PW2HKkzdkKY?t=662)
+### Downloading the data [11:02](https://youtu.be/PW2HKkzdkKY?t=662)
 
  This data comes from Kaggle. Kaggle is mainly known for being a competitions website and it's really great to download data from Kaggle when you're learning because you can see how would I have gone in that competition. And it's a good way to see whether you know what you are doing. I tend to think the goal is to try and get in the top 10%. In my experience, all the people in the top 10% of a competition really know what they're doing. So if you can get in the top 10%, then that's a really good sign. 
 
@@ -61,7 +59,7 @@ Pretty much every Kaggle dataset is not available for download outside of Kaggle
 You first have to install the Kaggle download tool via `pip`.
 
 ```bash
-#! pip install kaggle --upgrade
+! pip install kaggle --upgrade
 ```
 
 What we tend to do when there's one-off things to do is we show you the commented out version in the notebook and you can just remove the comment. If you select a few lines and then hit <kbd>ctrl</kbd>+<kbd>/</kbd>, it uncomment them all. Then when you are done, select them again, <kbd>ctrl</kbd>+<kbd>/</kbd> again and re-comments them all. So this line will install `kaggle` for you. Depending on your platform, you may need `sudo` or `/something/pip`, you may need `source activate` so have a look on the setup instructions instructions or the returning to work instructions on the course website to see when we do `conda	` install, you have to the same basic steps for your pip install. 
@@ -73,8 +71,8 @@ Once you've got that module installed, you can then go ahead and download the da
 > Upload this file to the directory this notebook is running in, by clicking "Upload" on your main Jupyter page, then uncomment and execute the next two commands (or run them in a terminal).
 
 ```bash
-#! mkdir -p ~/.kaggle/
-#! mv kaggle.json ~/.kaggle/
+! mkdir -p ~/.kaggle/
+! mv kaggle.json ~/.kaggle/
 ```
 
 
@@ -92,9 +90,9 @@ PosixPath('/home/jhoward/.fastai/data/planet')
 ```
 
 ```bash
-# ! kaggle competitions download -c planet-understanding-the-amazon-from-space -f train-jpg.tar.7z -p {path}  
-# ! kaggle competitions download -c planet-understanding-the-amazon-from-space -f train_v2.csv -p {path}  
-# ! unzip -q -n {path}/train_v2.csv.zip -d {path}
+ ! kaggle competitions download -c planet-understanding-the-amazon-from-space -f train-jpg.tar.7z -p {path}  
+ ! kaggle competitions download -c planet-understanding-the-amazon-from-space -f train_v2.csv -p {path}  
+ ! unzip -q -n {path}/train_v2.csv.zip -d {path}
 ```
 
 
@@ -104,7 +102,7 @@ Sometimes stuff on Kaggle is not just zipped or `tar`ed but it's compressed with
 > To extract the content of this file, we'll need 7zip, so uncomment the following line if you need to install it (or run `sudo apt install p7zip` in your terminal).
 
 ```bash
-# ! conda install -y -c haasad eidl7zip
+ ! conda install -y -c haasad eidl7zip
 ```
 
 
@@ -114,12 +112,12 @@ This is how you unzip a 7zip file. In this case, it's tared and 7zipped, so you 
 That's all basic stuff which if you are not familiar with the command line and stuff, it might take you a little bit of experimenting to get it working. Feel free to ask on the forum, make sure you search the forum first to get started. 
 
 ```bash
-# ! 7za -bd -y -so x {path}/train-jpg.tar.7z | tar xf - -C {path}
+ ! 7za -bd -y -so x {path}/train-jpg.tar.7z | tar xf - -C {path}
 ```
 
 
 
-#### Multiclassification [14:49](https://youtu.be/PW2HKkzdkKY?t=889)
+### Multiclassification [14:49](https://youtu.be/PW2HKkzdkKY?t=889)
 
 Once you've got the data downloaded and unzipped, you can take a look at it. In this case, because we have multiple labels for each tile, we clearly can't have a different folder for each image telling us what the label is. We need some different way to label it. The way Kaggle did it was they provided a CSV file that had each file name along with a list of all the labels. So in order to just take a look at that CSV file, we can read it using the Pandas library. If you haven't used pandas before, it's kind of  the standard way of dealing with tabular data in Python. It pretty much always appears in the `pd` namespace. In this case we're not really doing anything with it other than just showing you the contents of this file. So we can read it, take a look at the first few lines, and there it is:
 
@@ -178,7 +176,7 @@ For example, to grab the planet data we would say:
 
 So there's all these different steps. To give you a sense of what that looks like, the first thing I'm going to do is go back and explain what are all of the PyTorch and fastai classes you need to know about that are going to appear in this process. Because you're going to see them all the time in the fastai docs and PyTorch docs.
 
-##### Dataset (PyTorch) [18:30](https://youtu.be/PW2HKkzdkKY?t=1110)
+#### Dataset (PyTorch) [18:30](https://youtu.be/PW2HKkzdkKY?t=1110)
 
 The first one you need to know about is a class called a Dataset. The Dataset class is part of PyTorch and this is the source code for the Dataset class:
 
@@ -193,7 +191,7 @@ Then this one called `__len__` means that you can go `len(o)` and it will call t
 
 Fastai has lots of Dataset subclasses that do that for all different kinds of stuff. So far, you've been seeing image classification datasets. They are datasets where `__getitem__`  will return an image and a single label of what is that image. So that's what a dataset is. 
 
-##### DataLoader (PyTorch) [20:37](https://youtu.be/PW2HKkzdkKY?t=1237)
+#### DataLoader (PyTorch) [20:37](https://youtu.be/PW2HKkzdkKY?t=1237)
 
 Now a dataset is not enough to train a model. The first thing we know we have to do, if you think back to the gradient descent tutorial last week is we have to have a few images/items at a time so that our GPU can work in parallel. Remember we do this thing called a "mini-batch"? Mini-batch is a few items that we present to the model at a time that it can train from in parallel. To create a mini-batch, we use another PyTorch class called a DataLoader.
 
@@ -210,7 +208,7 @@ So a DataLoader is something that grabs individual items, combines them into a m
 
 You can see, already there are choices you have to make: what kind of dataset am I creating, what is the data for it, where it's going to come from. Then when I create my DataLoader: what batch size do I want to use.  
 
-##### DataBunch (fastai) [21:59](https://youtu.be/PW2HKkzdkKY?t=1319)
+#### DataBunch (fastai) [21:59](https://youtu.be/PW2HKkzdkKY?t=1319)
 
 It still isn't enough to train a model, because we've got no way to validate the model. If all we have is a training set, then we have no way to know how we're doing because we need a separate set of held out data, a validation set, to see how we're getting along.
 
@@ -233,7 +231,7 @@ With the dataset, the indexer returns two things:  the image and the labels (ass
 
 
 
-#### Data block API examples [23:56](https://youtu.be/PW2HKkzdkKY?t=1436)
+### Data block API examples [23:56](https://youtu.be/PW2HKkzdkKY?t=1436)
 
 Let's look at some examples of this data block API because once you understand the data block API, you'll never be lost for how to convert your dataset into something you can start modeling with.
 
@@ -241,7 +239,7 @@ Let's look at some examples of this data block API because once you understand t
 
 
 
-#### MNIST
+### MNIST
 
 Here are some examples of using the data block API. For example, if you're looking at MNIST (the pictures and classes of handwritten numerals), you can do something like this:
 
@@ -317,7 +315,7 @@ data.valid_ds.classes
 
 Here are the classes that are in that dataset. This little cut-down sample of MNIST has 3's and 7's. 
 
-#### Planet [26:01](https://youtu.be/PW2HKkzdkKY?t=1561)
+### Planet [26:01](https://youtu.be/PW2HKkzdkKY?t=1561)
 
 Here's an example using planet dataset. This is actually again a little subset of planet we use to make it easy to try things out. 
 
@@ -363,7 +361,7 @@ data.show_batch(rows=3, figsize=(10,8))
 
 There it is. Data bunches know how to draw themselves amongst other things. 
 
-#### CAMVID [26:38](https://youtu.be/PW2HKkzdkKY?t=1598)
+### CAMVID [26:38](https://youtu.be/PW2HKkzdkKY?t=1598)
 
 Here's some more examples we're going to be seeing later today.
 
@@ -414,7 +412,7 @@ What if we look at this data set called CAMBID?  CAMVID looks like this. It cont
 
 Again, it knows how to draw itself and you can start learning with that.
 
-#### COCO [27:41](https://youtu.be/PW2HKkzdkKY?t=1661)
+### COCO [27:41](https://youtu.be/PW2HKkzdkKY?t=1661)
 
 One more example. What if we wanted to create something like this:
 
@@ -461,7 +459,7 @@ Everything that you want to use in fastai, you can look it up in the documentati
 
 So once you find some documentation that you actually want to try playing with yourself, just look up the name (e.g. `data_block.html`) and then you can open up a notebook with the same name (e.g. `data_block.ipynb`) in the fastai repo and play with it yourself.
 
-#### Creating satellite image data bunch [29:35](https://youtu.be/PW2HKkzdkKY?t=1775)
+### Creating satellite image data bunch [29:35](https://youtu.be/PW2HKkzdkKY?t=1775)
 
 That was a quick overview of this really nice data block API, and there's lots of documentation for all of the different ways you can label inputs, split data, and create datasets. So that's what we're using for planet.
 
@@ -489,7 +487,7 @@ A few interesting points about this.
 
 This is all something called data augmentation. We'll be talking a lot more about it later in the course. But you can start to get a feel for the kinds of things that you can do to augment your data. In general, maybe the most important one is if you're looking at astronomical data, pathology digital slide data, or satellite data where there isn't really an up or down, turning on flip verticals true is generally going to make your models generalize better.
 
-#### Creating multi-label classifier [35:59](https://youtu.be/PW2HKkzdkKY?t=1979)
+### Creating multi-label classifier [35:59](https://youtu.be/PW2HKkzdkKY?t=1979)
 
 Now to create a multi-label classifier that's going to figure out for each satellite tile what's the weather and what else what can I see in it, there's basically nothing else to learn. Everything else that you've already learned is going to be exactly nearly the same.
 
@@ -562,7 +560,7 @@ The normal accuracy function doesn't work that way. It doesn't `argmax`. We have
 
 
 
-#### Python3 `partial` [[39:17](https://youtu.be/PW2HKkzdkKY?t=2357)]
+### Python3 `partial` [[39:17](https://youtu.be/PW2HKkzdkKY?t=2357)]
 
 One of the things we had passed in is `thresh`. Now of course our metric is going to be calling our function for us, so we don't get to tell it every time it calls back what threshold do we want, so we really want to create a special version of this function that always uses a threshold of 0.2. One way to do that would be defining a function `acc_02` as below:
 
@@ -708,7 +706,7 @@ The answer is it depends. If you're using the web which I guess probably most of
 
 
 
-### How to choose good learning rates [[48:50](https://youtu.be/PW2HKkzdkKY?t=2930)]
+## How to choose good learning rates [[48:50](https://youtu.be/PW2HKkzdkKY?t=2930)]
 
 One thing to notice here is that before we unfreeze you'll tend to get this shape pretty much all the time:
 
@@ -729,7 +727,7 @@ This is a little bit harder to say what to look for because it tends to be this 
 
 This is called discriminative learning rates as the course continues. 
 
-### Making the model better [50:30](https://youtu.be/PW2HKkzdkKY?t=3030)
+## Making the model better [50:30](https://youtu.be/PW2HKkzdkKY?t=3030)
 
 How am I going to get this better? We want to get into the top 10% which is going to be about 0.929 ish so we're not quite there (0.9288). 
 
@@ -835,7 +833,7 @@ You can see as I kind of go along I tend to save things. You can name your model
 
 
 
-## Segmentation example: CamVid [[56:31](https://youtu.be/PW2HKkzdkKY?t=3391)] 
+# Segmentation example: CamVid [[56:31](https://youtu.be/PW2HKkzdkKY?t=3391)] 
 
 [Notebook](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson3-camvid.ipynb)
 
@@ -879,7 +877,7 @@ And within a small number of weeks, you will find that you're picking the best l
 
 
 
-### Image Segmentation [[1:03:05](https://youtu.be/PW2HKkzdkKY?t=3785)]
+## Image Segmentation [[1:03:05](https://youtu.be/PW2HKkzdkKY?t=3785)]
 
 So how do we do image segmentation? The same way we do everything else. Basically we're going to start with some path which has got some information in it of some sort. 
 
@@ -998,7 +996,7 @@ array(['Animal', 'Archway', 'Bicyclist', 'Bridge', 'Building', 'Car', 'CartLugga
 
 `code.txt` contains a list telling us that, for example, number 4 is`building`. Just like we had grizzlies, black bears, and teddies, here we've got the coding for what each one of these pixels means.
 
-#### Creating a data bunch [[1:05:53](https://youtu.be/PW2HKkzdkKY?t=3953)]
+### Creating a data bunch [[1:05:53](https://youtu.be/PW2HKkzdkKY?t=3953)]
 
 To create a data bunch, we can go through the data block API and say:
 
@@ -1040,7 +1038,7 @@ data.show_batch(2, figsize=(10,7))
 
 This is quite nice. Because fastai knows that you've given it a segmentation problem, when you call show batch, it actually combines the two pieces for you and it will color code the photo. Isn't that nice? So this is what the ground truth data looks.
 
-#### Training [[1:09:00](https://youtu.be/PW2HKkzdkKY?t=4140)]
+### Training [[1:09:00](https://youtu.be/PW2HKkzdkKY?t=4140)]
 
 Once we've got that, we can go ahead and 
 
@@ -1064,7 +1062,7 @@ def acc_camvid(input, target):
 
 ```python
 metrics=acc_camvid
-# metrics=accuracy
+ metrics=accuracy
 ```
 
 ```python
@@ -1184,7 +1182,7 @@ But if you're still under fitting, then you're going to have to decrease regular
 
 They will be the key things that are we talking about.
 
-### U-Net [[1:16:24](https://youtu.be/PW2HKkzdkKY?t=4584)]
+## U-Net [[1:16:24](https://youtu.be/PW2HKkzdkKY?t=4584)]
 
 For segmentation, we don't just create a convolutional neural network. We can, but actually a architecture called U-Net turns out to be better.
 
@@ -1198,7 +1196,7 @@ You don't really need to know any details at this stage. All you need to know is
 
 Having done that, everything else works the same. 
 
-#### A little more about `learn.recorder` [[1:18:54](https://youtu.be/PW2HKkzdkKY?t=4734)]
+### A little more about `learn.recorder` [[1:18:54](https://youtu.be/PW2HKkzdkKY?t=4734)]
 
 Here's something interesting. `learn.recorder` is where we keep track of what's going on during training. It's got a number nice methods one of which is plot losses.
 
@@ -1272,7 +1270,7 @@ If you have a really small learning rate, it'll tend to kind of plud down and st
 
 So it turns out that gradually increasing the learning rate is a really good way of helping the model to explore the whole function surface, and try and find areas where both the loss is low and also it's not bumpy. Because if it was bumpy, it would get kicked out again. This allows us to train at really high learning rates, so it tends to mean that we solve our problem much more quickly, and we tend to end up with much more generalizable solutions.
 
-### What you are looking for in `plot_losses` [[1:25:01](https://youtu.be/PW2HKkzdkKY?t=5101)]
+## What you are looking for in `plot_losses` [[1:25:01](https://youtu.be/PW2HKkzdkKY?t=5101)]
 
 If you call `plot_losses` and find that it's just getting a little bit worse and then it gets a lot better you've found a really good maximum learning rate.
 
@@ -1280,7 +1278,7 @@ If you call `plot_losses` and find that it's just getting a little bit worse and
 
 So when you actually call fit one cycle, you're not actually passing in a learning rate. You're actually passing in a maximum learning rate. if it's kind of always going down, particularly after you unfreeze, that suggests you could probably bump your learning rates up a little bit﹣because you really want to see this kind of shape. It's going to train faster and generalize better. You'll to tend to particularly see it in the validation set (the orange is the validation set). Again, the difference between kind of knowing this theory and being able to do it, is looking at lots of these pictures. So after you train stuff, type `learn.recorder.` and hit tab, and see what's in there﹣particularly the things that start with "plot" and start getting a sense of what are these pictures looking like when you're getting good results.  Then try making the learning rate much higher, try making it much lower, more epochs, less epochs, and get a sense for what these look like.
 
-#### Go big [[1:26:16](https://youtu.be/PW2HKkzdkKY?t=5176)]
+### Go big [[1:26:16](https://youtu.be/PW2HKkzdkKY?t=5176)]
 
 ![](lesson3/33.png)
 
@@ -1400,7 +1398,7 @@ I'm not going to promise that this is the definite state-of-the-art today, becau
 
 We actually haven't published the paper on the exact details of how this variation of the U-Net works﹣there's a few little tweaks we do, but if you come back for part 2, we'll be going into all of the details about how we make this work so well. But for you, all you have to know at this stage is that you can say `learner.create_unet` and you should get great results also.
 
-#### Another trick: Mixed precision training [[1:30:59](https://youtu.be/PW2HKkzdkKY?t=5459)]
+### Another trick: Mixed precision training [[1:30:59](https://youtu.be/PW2HKkzdkKY?t=5459)]
 
 There's another trick you can use if you're running out of memory a lot which is you can actually do something called mixed precision training. Mixed precision training means that (for those of you that have done a little bit of computer science) instead of using single precision floating point numbers, you can do most of the calculations in your model with half precision floating point numbers﹣so 16 bits instead of 32 bits. The very idea of this has only been around for the last couple of years﹣in terms of like hardware that actually does this reasonably quickly. Then fastai library, I think, is the first and probably still the only that makes it actually easy to use this. 
 
@@ -1412,7 +1410,7 @@ I actually have never seen people use mixed precision floating point for segment
 
 You just need to make sure that every time you create a learner you add at this `to_fp16()`. If your kernel dies, it probably means you have slightly out of date CUDA drivers or maybe even a too old graphics card I'm not sure exactly which cards support FP16.
 
-## Regression with BIWI head pose dataset [[1:34:03](https://youtu.be/PW2HKkzdkKY?t=5643)]
+# Regression with BIWI head pose dataset [[1:34:03](https://youtu.be/PW2HKkzdkKY?t=5643)]
 
 [lesson3-head-pose.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson3-head-pose.ipynb)
 
@@ -1540,7 +1538,7 @@ data.show_batch(3, figsize=(9,6)
 
 I noticed that their red dots don't always seem to be quite in the middle of the face. I don't know exactly what their internal algorithm for putting dots on. It sometimes looks like it's meant to be the nose, but sometimes it's not quite the nose. Anyway it's somewhere around the center of the face or the nose.
 
-#### Create a regression model [[1:38:59](https://youtu.be/PW2HKkzdkKY?t=5939)]
+### Create a regression model [[1:38:59](https://youtu.be/PW2HKkzdkKY?t=5939)]
 
 So how do we create a model? We create a CNN. We're going to be learning a lot about loss functions in the next few lessons, but basically the loss function is that number that says how good is the model. For classification, we use this loss function called cross-entropy loss which says basically "did you predict the correct class and were you confident of that prediction?" We can't use that for regression, so instead we use something called mean squared error. If you remember from last lesson, we actually implemented mean squared error from scratch. It's just the difference between the two, squared, and added up together. 
 
@@ -1587,7 +1585,7 @@ learn.show_results()
 
 It's doing nearly perfect job. That's how you can do image regression models. Anytime you've got something you're trying to predict which is some continuous value, you use an approach that's something like this.
 
-### IMDB [[1:41:07](https://youtu.be/PW2HKkzdkKY?t=6067)]
+## IMDB [[1:41:07](https://youtu.be/PW2HKkzdkKY?t=6067)]
 
 [lesson3-imdb.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson3-imdb.ipynb)
 
@@ -1740,7 +1738,7 @@ That's it. And if you want to be really exclusive, of course, you then shorten t
 
 Here's the crazy thing. If you take your red green blue pixel inputs, and you chuck them through a matrix modification, and then you replace the negatives with zero, and you put it through another matrix modification, replace the negatives at zero, and you keep doing that again and again, you have a deep learning neural network. That's it. 
 
-#### Universal approximation theorem [[1:52:27](https://youtu.be/PW2HKkzdkKY?t=6747)]
+### Universal approximation theorem [[1:52:27](https://youtu.be/PW2HKkzdkKY?t=6747)]
 
 So how the heck does that work? An extremely cool guy called Michael Nielsen showed how this works. He has a very nice website (actually a book) http://neuralnetworksanddeeplearning.com and he has these beautiful little JavaScript things where you can get to play around. Because this was back in the old days, this was back when we used to use sigmoids. What he shows is that if you have enough little matrix multiplications followed by sigmoids (exactly the same thing works for a matrix multiplication followed by a ReLU), you can actually create arbitrary shapes. So this idea that these combinations of  linear functions and nonlinearities can create arbitrary shapes actually has a name and this name is the universal approximation theorem. 
 
@@ -1766,7 +1764,7 @@ For 4 channel, you probably don't want to get rid of the 4th channel. So instead
 
 
 
-#### Wrapping up [[2:01:19](https://youtu.be/PW2HKkzdkKY?t=7279)]
+### Wrapping up [[2:01:19](https://youtu.be/PW2HKkzdkKY?t=7279)]
 
 What have we looked at today? We started out by saying it's really easy now to create web apps. We've got starter kits for you that show you how to create web apps, and people have created some really cool web apps using what we've learned so far which is single label classification. 
 
@@ -1794,3 +1792,5 @@ These are all mathematical functions that we can learn using this approach.
 So this week, see if you can come up with an interesting idea of a problem that you would like to solve which is either multi-label classification, image regression, image segmentation, or something like that and see if you can try to solve that problem. You will probably find the hardest part of solving that problem is creating the data bunch and so then you'll need to dig into the data block API to try to figure out how to create the data bunch from the data you have. With some practice, you will start to get pretty good at that. It's not a huge API. There's a small number of pieces. It's also very easy to add your own, but for now, ask on the forum if you try something and you get stuck.
 
 Next week, we're going to come back and we're going to look at some more NLP. We're going to learn some more about some details about how we actually train with SGD quickly. We're going to learn about things like Adam and RMSProp and so forth. Snd hopefully, we're also going to show off lots of really cool web apps and models that you've all built during the week, so I'll see you then Thanks!
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

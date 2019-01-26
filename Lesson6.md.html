@@ -1,10 +1,8 @@
-# Lesson 6
-
 [Video](https://youtu.be/U7c-nYXrKD4) / [Course Forum](https://forums.fast.ai/t/lesson-6-official-resources-and-updates/31441)
 
 Welcome to lesson 6 where we're going to do a deep dive into computer vision, convolutional neural networks, what is a convolution, and we're also going to learn the final regularization tricks after last lesson learning about weight decay/L2 regularization.
 
-### Platform.ai 
+## Platform.ai 
 
 I want to start by showing you something that I'm really excited about and I've had a small hand and helping to to create. For those of you that saw [my talk on ted.com](https://www.ted.com/talks/jeremy_howard_the_wonderful_and_terrifying_implications_of_computers_that_can_learn/up-next?language=en), you might have noticed this really interesting demo that we did about four years ago showing a way to quickly build models with unlabeled data. It's been four years but we're finally at a point where we're ready to put this out in the world and let people use it. And the first people we're going to let use it are you folks.
 
@@ -36,7 +34,7 @@ Once you've done that a few times, I find if you've got a hundred or so labels, 
 
 Clearly, there are some things that this system is better at than others. For things that require really zooming in closely and taking a very very close inspection, this isn't going to work very well. This is really designed for things that the human eye can kind of pick up fairly readily. But we'd love to get feedback as well, and you can click on the Help button to give feedback. Also there's a [platform.ai discussion topic](https://forums.fast.ai/t/platform-ai-discussion/31445) in our forum. So Arshak if you can stand up, Arshak is the CEO of the company. He'll be there helping out answering questions and so forth. I hope people find that useful. It's been many years getting to this point, and I'm glad we're finally there.
 
-### Finishing up regularization for the Tabular Learner[[9:48](https://youtu.be/U7c-nYXrKD4?t=588)]
+## Finishing up regularization for the Tabular Learner[[9:48](https://youtu.be/U7c-nYXrKD4?t=588)]
 
 One of the reasons I wanted to mention this today is that we're going to be doing a big dive into convolutions later in this lesson. So I'm going to circle back to this to try and explain a little bit more about how that is working under the hood, and give you a kind of a sense of what's going on. But before we do, we have to finish off last week's discussion of regularization. We were talking about regularization specifically in the context of the tabular learner because the tabular learner, this is the init method in the tabular learner:
 
@@ -72,7 +70,7 @@ train_df = pd.read_pickle(path/'train_clean')
 
 
 
-#### Time Series and `add_datepart` [[13:21](https://www.youtube.com/watch?v=U7c-nYXrKD4&feature=youtu.be&t=530)]
+### Time Series and `add_datepart` [[13:21](https://www.youtube.com/watch?v=U7c-nYXrKD4&feature=youtu.be&t=530)]
 
 I just want to mention one particularly interesting part of the rossmann data clean notebook which is you'll see there's something that says `add_datepart` and I wanted to explain what's going on here.
 
@@ -161,7 +159,7 @@ train_df.head().T
 
 The key thing here is that we're trying to on a particular date for a particular store ID, we want to predict the number of sales. Sales is the dependent variable. 
 
-### Preprocesses [[16:52](https://youtu.be/U7c-nYXrKD4?t=1012)]
+## Preprocesses [[16:52](https://youtu.be/U7c-nYXrKD4?t=1012)]
 
 The first thing I'm going to show you is something called pre-processes. You've already learned about transforms. **Transforms** are bits of code that **run every time something is grabbed from a data set** so it's really good for data augmentation that we'll learn about today, which is that it's going to get a different random value every time it's sampled. **Preprocesses** are like transforms, but they're a little bit different which is that they run once before you do any training. Really importantly, they **run once on the training set and then any kind of state or metadata that's created is then shared with the validation and test set**. 
 
@@ -194,7 +192,7 @@ small_train_df.head()
 
 You can see, one of them is called promo interval and it has these strings, and sometimes it's missing. In Pandas, missing is `NaN`. 
 
-#### Preprocessor: Categorify [[18:39](https://youtu.be/U7c-nYXrKD4?t=1119)]
+### Preprocessor: Categorify [[18:39](https://youtu.be/U7c-nYXrKD4?t=1119)]
 
 The first preprocessor I'll show you is Categorify.
 
@@ -245,7 +243,7 @@ So then if I look at the `cat.codes`, you can see here this list here is the num
 
 As you know, these are going to end up in an embedding matrix, and we can't look up item -1 in an embedding matrix. So internally in fast.ai, we add one to all of these.
 
-#### Preprocessor: Fill Missing [[20:18](https://youtu.be/U7c-nYXrKD4?t=1218)]
+### Preprocessor: Fill Missing [[20:18](https://youtu.be/U7c-nYXrKD4?t=1218)]
 
 Another useful preprocessor is `FillMissing`. Again, you can call it on the data frame, you can call on the test passing in `test=true`.
 
@@ -288,7 +286,7 @@ This is saying "ok, I want to fill missing, I want to categorify, I want to norm
 
 Later on, you can go `data.export` and it'll save all the metadata for that data bunch so you can, later on, load it in knowing exactly what your category codes are, exactly what median values used for replacing the missing values, and exactly what means and standard deviations you normalize by. 
 
-#### Categorical and Continuous Variables [[22:23](https://youtu.be/U7c-nYXrKD4?t=1343)]
+### Categorical and Continuous Variables [[22:23](https://youtu.be/U7c-nYXrKD4?t=1343)]
 
 The main thing you have to do if you want to create a data bunch of tabular data is tell it what are your categorical variables and what are your continuous variables. As we discussed last week briefly, your categorical variables are not just strings and things, but also I include things like day of week and month and day of month. Even though they're numbers, I make them categorical variables. Because, for example, day of month, I don't think it's going to have a nice smooth curve. I think that the fifteenth of the month and the first of the month and the 30th of the month are probably going to have different purchasing behavior to other days of the month. Therefore, if I make it a categorical variable, it's going to end up creating an embedding matrix and those different days of the month can get different behaviors.
 
@@ -366,7 +364,7 @@ This is our standard data block API that you've seen a few times:
 
 Here's something I don't think you've seen before - label class (`label_cls=FloatList`). This is our dependent variable (`df[dep_var].head()` above), and as you can see, this is sales. It's not a float. It's int64. **If this was a float, then fast.ai would automatically guess that you want to do a regression**. But this is not a float, it's an int. So fast.ai is going to assume you want to do a classification. So when we label it, we have to tell it that the class of the labels we want is a list of floats, not a list of categories (which would otherwise be the default). So **this is the thing that's going to automatically turn this into a regression problem for us**.  Then we create a data bunch. 
 
-### Reminder about Doc [[25:09](https://youtu.be/U7c-nYXrKD4?t=1509)]
+## Reminder about Doc [[25:09](https://youtu.be/U7c-nYXrKD4?t=1509)]
 
 ```python
 doc(FloatList)
@@ -386,7 +384,7 @@ Neither fast.ai nor PyTorch has a root mean squared percentage error loss functi
 
 The reason that we have this (`log=True`) here is because this is so common. Basically anytime you're trying to predict something like a population or a dollar amount of sales, these kind of things tend to have long tail distributions where you care more about percentage differences and exact/absolute differences. So you're very likely to want to do things with `log=True` and to measure the root mean squared percent error.
 
-#### `y_range` [[27:12](https://youtu.be/U7c-nYXrKD4?t=1632)]
+### `y_range` [[27:12](https://youtu.be/U7c-nYXrKD4?t=1632)]
 
 ```python
 max_log_y = np.log(np.max(train_df['Sales'])*1.2)
@@ -409,7 +407,7 @@ learn = tabular_learner(data, layers=[1000,500], ps=[0.001,0.01], emb_drop=0.04,
 
 Now the intermediate weight matrix is going to have to go from a 1000 activation input to a 500 activation output, which means it's going to have to be 500,000 elements in that weight matrix. That's an awful lot for a data set with only a few hundred thousand rows. So this is going to overfit, and we need to make sure it doesn't. The way to make sure it doesn't is to **use regularization; not to reduce the number of parameters**. So one way to do that will be to use weight decay which fast.ai will use automatically, and you can vary it to something other than the default if you wish. It turns out in this case, we're going to want more regularization. So we're going to pass in something called `ps`. This is going to provide dropout. And also this one here `embb_drop` - this is going to provide embedding dropout.
 
-### Dropout [[29:47](https://youtu.be/U7c-nYXrKD4?t=1787)]
+## Dropout [[29:47](https://youtu.be/U7c-nYXrKD4?t=1787)]
 
 Let's learn about what is dropout. The short version is dropout is a kind of regularization. This is [the dropout paper](https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf) Nitish Srivastava it was Srivastava's master's thesis under Geoffrey Hinton. 
 
@@ -441,7 +439,7 @@ Now too much dropout, of course, is reducing the capacity of your model, so it's
 
 In pretty much every fast.ai learner, there's a parameter called `ps` which will be the p-value for the dropout for each layer. So you can just pass in a list, or you can pass it an int and it'll create a list with that value everywhere. Sometimes it's a little different. For CNN, for example, if you pass in an int, it will use that for the last layer, and half that value for the earlier layers. We basically try to do things represent best practice. But you can always pass in your own list to get exactly the dropout that you want.
 
-### Dropout and test time [[34:47](https://youtu.be/U7c-nYXrKD4?t=2087)]
+## Dropout and test time [[34:47](https://youtu.be/U7c-nYXrKD4?t=2087)]
 
 ![](lesson6/7.png)
 
@@ -573,7 +571,7 @@ It was rejected from the main neural nets conference what was then called NIPS, 
 
 It's a reminder that if you just follow as you develop beyond being just a practitioner into actually doing your own research, don't just focus on the stuff everybody's talking about. Focus on the stuff you think might be interesting. Because the stuff everybody's talking about generally turns out not to be very interesting. The community is very poor at recognizing high-impact papers when they come out.
 
-### Batch Normalization [[44:28](https://youtu.be/U7c-nYXrKD4?t=2668)]
+## Batch Normalization [[44:28](https://youtu.be/U7c-nYXrKD4?t=2668)]
 
 Batch normalization, on the other hand, was immediately recognized as high-impact. I definitely remember everybody talking about it in 2015 when it came out. That was because it's so obvious, they showed this picture:
 
@@ -712,7 +710,7 @@ We end up 0.103. 10th place in the competition was 0.108, so it's looking good. 
 
 So remember that L2 regularization and weight decay are kind of two ways of doing the same thing? We should always use the weight decay version, not the L2 regularization version. So there's weight decay. There's batch norm which kind of has a regularizing effect. There's data augmentation which we'll see soon, and there's dropout. So batch norm, we pretty much always want. So that's easy. Data augmentation, we'll see in a moment. So then it's really between dropout versus weight decay. I have no idea. I don't think I've seen anybody to provide a compelling study of how to combine those two things. Can you always use one instead of the other? Why? Why not? I don't think anybody has figured that out. I think in practice, it seems that you generally want a bit of both. You pretty much always want some weight decay, but you often also want a bit of dropout. But honestly, I don't know why. I've not seen anybody really explain why or how to decide. So this is one of these things you have to try out and kind of get a feel for what tends to work for your kinds of problems. I think the defaults that we provide in most of our learners should work pretty well in most situations. But yeah, definitely play around with it.
 
-### Data augmentation [[56:45](https://youtu.be/U7c-nYXrKD4?t=3405)]
+## Data augmentation [[56:45](https://youtu.be/U7c-nYXrKD4?t=3405)]
 
 The next kind of regularization we're going to look at is data augmentation. Data augmentation is one of the least well studied types of regularization, but it's the kind that I think I'm kind of the most excited about. The reason I'm kind of the most about it is that there's basically almost no cost to it. You can do data augmentation and get better generalization without it taking longer to train, without underfitting (to an extent, at least). So let me explain.
 
@@ -828,7 +826,7 @@ plot_multi(_plot, 3, 3, figsize=(8,8))
 
 Here's the same thing again, but with reflection padding instead of zero padding. and you can kind of see like this doggies legs are actually being reflected at the bottom (bottom center). So reflection padding tends to create images that are much more naturally reasonable. In the real world, you don't get black borders. So they do seem to work better.
 
-### Convolutional Neural Network [[1:05:14](https://youtu.be/U7c-nYXrKD4?t=3914)]
+## Convolutional Neural Network [[1:05:14](https://youtu.be/U7c-nYXrKD4?t=3914)]
 
 Because we're going to study convolutional neural networks, we are going to create a convolutional neural network. You know how to create them, so I'll go ahead and create one. I will fit it for a little bit. I will unfreeze it, I will then create a larger version of the data set 352 by 352, and fit for a little bit more, and I will save it.
 
@@ -1069,7 +1067,7 @@ Anyway, we're now have 64 output channels, and since it was stride 2, it's now 1
 
 So we keep going through a few more convs and as you can see, they've got batch norm and ReLU, that's kind of pretty standard. And eventually we do it again - another stride 2 conv which again doubles. we now got 512 by 11 by 11. And that's basically where we finish the main part of the network. We end up with 512 channels 11 by 11.
 
-#### Manual Convolutions [[1:29:24](https://youtu.be/U7c-nYXrKD4?t=5364)]
+### Manual Convolutions [[1:29:24](https://youtu.be/U7c-nYXrKD4?t=5364)]
 
 We're actually at a point where we're going to be able to do this heat map now. So let's try and work through it. Before we do, I want to show you how you can do your own manual convolutions because it's kind of fun. 
 
@@ -1153,7 +1151,7 @@ show_image(edge[0], figsize=(5,5));
 
 Now I can go `conv2d` and get back a cat, specifically my Maine Coon. So that's how you can play around with convolutions yourself. So how are we going to do this to create a heat map?
 
-### Creating Heat Map [[1:33:50](https://youtu.be/U7c-nYXrKD4?t=5630)]
+## Creating Heat Map [[1:33:50](https://youtu.be/U7c-nYXrKD4?t=5630)]
 
 This is where things get fun. Remember mentioned was that I basically have my input red green blue. It goes through a bunch of convolutional layers (let us write a little line to say a convolutional layer) to create activations which have more and more channels and smaller and smaller height by widths. Until eventually, remember we looked at the summary, we ended up with something which was 11 by 11 by 512. There's a whole bunch more layers that we skipped over.
 
@@ -1292,7 +1290,7 @@ We've got our hook, so now fast.ai hooks (at least the output hooks) always give
 
 There's a lot to unpack. But if you take your time going through these two sections; the **Convolution Kernel** section and the **Heatmap** section of this notebook, like running those lines of code and changing them around a little bit, and remember the most important thing to look at is shape. You might have noticed. When I'm showing you these notebooks, I very often print out the shape. And when you look at this shape, you want to be looking at how many axes are there (that's the rank of the tensor) and how many things are there in each axis, and try and think why. Try going back to the print out of the summary, try going back to the actual list of the layers, and try and go back and think about the actual picture we drew, and think about what's actually going on. So that's a lot of technical content, so what I'm going to do now is switch from technical content to something much more important.
 
-### Ethics and Data Science [[1:49:10](https://youtu.be/U7c-nYXrKD4?t=6550)]
+## Ethics and Data Science [[1:49:10](https://youtu.be/U7c-nYXrKD4?t=6550)]
 
 In the next lesson, we're going to be looking at generative models both text and image generative models. Generative models are where you can create a new piece of text or a new image or a new video or a new sound. As you probably are aware, this is the area that deep learning has developed the most in in the last 12 months. We're now at a point where we can generate realistic looking videos, images, audio, and to some extent even text. There are many things in this journey which have ethical considerations, but perhaps this area of generative modeling is one of the largest ones. So before I got into it, I wanted to specifically touch on ethics and data science.
 
@@ -1411,3 +1409,5 @@ To summarize, we are part of the0.3 to 0.5% of the world that knows how to code.
 So why is this interesting to you as an audience in particular? That's because fast.ai in particular is trying to make it easy for domain experts to use deep learning. This picture of the goats here is an example of one of our international fellows from a previous course who is a goat dairy farmer and told us that they were going to use deep learning on their remote Canadian island to help study udder disease in goats. To me, this is a great example of a domain experts problem which nobody else even knows about, let alone know that it's a computer vision problem that can be solved with deep learning. So in your field, whatever it is, you probably know a lot more now about the opportunities in your field to make it a hell of a lot better than it was before. You're probably able to come up with all kinds of cool product ideas, maybe build a startup or create a new product group in your company or whatever. But also, please be thinking about what that's going to mean in practice, and think about where can you put humans in the loop? Where can you put those pressure release valves? Who are the people you can talk to who could be impacted who could help you understand? And get the humanities folks involved to understand history and psychology and sociology and so forth. 
 
 That's our plea to you. If you've got this far, you're definitely at a point now where you're ready to make a serious impact on the world, so I hope we can make sure that that's a positive impact. See you next week!
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

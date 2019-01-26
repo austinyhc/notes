@@ -1,20 +1,18 @@
-# Lesson 4
-
 [Video](https://youtu.be/C9UdVPE3ynA) / [Lesson Forum](https://forums.fast.ai/t/lesson-4-official-resources-and-updates/30317)
 
 Welcome to Lesson 4! We are going to finish our journey through these key applications. We've already looked at a range of vision applications. We've looked a classification, localization, image regression. We briefly touched on NLP. We're going to do a deeper dive into NLP transfer learning today. We're going to then look at tabular data and  collaborative filtering which are both super useful applications. 
 
 Then we're going to take a complete u-turn. We're going to take that collaborative filtering example and dive deeply into it to understand exactly what's happening mathematically﹣exactly what's happening in the computer. And we're going to use that to gradually go back in reverse order through the applications again in order to understand exactly what's going on behind the scenes of all of those applications.
 
-### Correction on CamVid result 
+## Correction on CamVid result 
 
 Before we do, somebody on the forum is kind enough to point out that when we compared ourselves to what we think might be the state of the art or was recently the state of the art for CamVid, there wasn't a fair comparison because the paper actually used a small subset of the classes, and we used all of the classes. So Jason in our study group was kind enough to rerun the experiments with the correct subset of classes from the paper, and our accuracy went up to 94% compared to 91.5% of the paper. So I think that's a really cool result. and a great example of how pretty much just using the defaults nowadays can get you far beyond what was the best of a year or two ago. It was certainly the best last year when we were doing this course because we started it quite intensely. So that's really exciting.
 
-## Natural Language Processing (NLP) [[2:00](https://youtu.be/C9UdVPE3ynA?t=120)]
+# Natural Language Processing (NLP) [[2:00](https://youtu.be/C9UdVPE3ynA?t=120)]
 
 What I wanted to start with is going back over NLP a little bit to understand really what was going on there. 
 
-### A quick review
+## A quick review
 
 So first of all, a quick review. Remember NLP is natural language processing. It's about taking text and doing something with it. Text classification is particularly useful﹣practically useful applications. It's what we're going to start off focusing on. Because classifying a text or classifying a document can be used for anything from:
 
@@ -39,7 +37,7 @@ Until very recently, in fact, this year, neural nets didn't do a good job at all
 
 Last year in this course I tried something crazy which was I thought what if I try transform learning to demonstrate that it can work for NLP as well. I tried it out and it worked extraordinarily well. So here we are, a year later, and transfer learning in NLP is absolutely the hit thing. And I'm going to describe to you what happens. 
 
-### Transfer learning in NLP [[6:04](https://youtu.be/C9UdVPE3ynA?t=364)]
+## Transfer learning in NLP [[6:04](https://youtu.be/C9UdVPE3ynA?t=364)]
 
 The key thing is we're going to start with the same kind of thing that we used for computer vision﹣a pre-trained model that's been trained to do something different to what we're doing with it. For ImageNet, that was originally built as a model to predict which of a thousand categories each photo falls into. And people then fine-tune that for all kinds of different things as you've seen. So we're going to start with a pre-trained model that's going to do something else. Not movie review classification. We're going to start with a pre-trained model which is called a language model.
 
@@ -54,7 +52,7 @@ Now previous approaches to NLP use something called n-grams largely which is bas
 
 So here's the nice thing. If you train a neural net to predict the next word of a sentence then you actually have a lot of information. Rather than having a single bit to every 2,000 word movie review: "liked it" or "didn't like it", every single word, you can try and predict the next word. So in a 2,000 word movie review, there are 1,999 opportunities to predict the next word. Better still, you don't just have to look at movie reviews. Because really the hard thing isn't so much as "does this person like the movie or not?" but "how do you speak English?". So you can learn "how do you speak English?" (roughly) from some much bigger set of documents. So what we did was we started with Wikipedia. 
 
-#### Wikitext 103 [[8:30](https://youtu.be/C9UdVPE3ynA?t=510)]
+### Wikitext 103 [[8:30](https://youtu.be/C9UdVPE3ynA?t=510)]
 
 Stephen Merity and some of his colleagues built something called Wikitext 103 dataset which is simply a subset of most of the largest articles from Wikipedia with a little bit of pre-processing that's available for download. So you're basically grabbing Wikipedia and then I built a language model on all of Wikipedia. So I just built a neural net which would predict the next word in every significantly sized Wikipedia article. That's a lot of information. If I remember correctly, it's something like a billion tokens. So we've got a billion separate things to predict. Every time we make a mistake on one of those predictions, we get the loss, we get gradients from that, and we can update our weights, and they can better and better until we can get pretty good at predicting the next word of Wikipedia.
 
@@ -62,7 +60,7 @@ Why is that useful? Because at that point, I've got a model that knows probably 
 
 So here's the interesting thing. You can start by training a language model on all of Wikipedia, and then we can make that available to all of you. Just like a pre-trained ImageNet model for vision, we've now made available a pre-trained Wikitext model for NLP not because it's particularly useful of itself (predicting the next word of sentences is somewhat useful, but not normally what we want to do), but it's a model that understands a lot about language and a lot about what language describes. So then, we can take that and we can do transfer learning to create a new language model that's specifically good at predicting the next word of movie reviews.
 
-#### Fine-tuning Wikitext to create a new language model [[11:10](https://youtu.be/C9UdVPE3ynA?t=670)] 
+### Fine-tuning Wikitext to create a new language model [[11:10](https://youtu.be/C9UdVPE3ynA?t=670)] 
 
 If we can build a language model that's good at predicting the next word of movie reviews pre-trained with the Wikitext model, then that's going to understand a lot about "my favorite actor is Tom ____. " Or "I thought the photography was fantastic but I wasn't really so happy about the _____ (director)." It's going to learn a lot about specifically how movie reviews are written. It'll even learn things like what are the names of some popular movies.
 
@@ -78,7 +76,7 @@ Another example was the researcher Andrej Karpathy who now runs all this stuff a
 
 We're not really that interested in the output of the language model ourselves. We're just interested in it because it's helpful with this process. 
 
-#### Review of the basic process [[15:14](https://youtu.be/C9UdVPE3ynA?t=914)]
+### Review of the basic process [[15:14](https://youtu.be/C9UdVPE3ynA?t=914)]
 
 We briefly looked at the process last week. The basic process is, we're going to start with the data in some format. So for example, we've prepared a little IMDB sample that you can use which is in CSV file. You can read it in with Pandas and there's negative or positive, the text of each movie review, and boolean of is it in the validation set or the training set.
 
@@ -189,7 +187,7 @@ We also have a couple of other special tokens like (see `fastai.text.transform.p
 - `xxfld`: This is a special thing where if you've got like title, summary, abstract, body, (i. e. separate parts of a document), each one will get a separate field and so they will get numbered (e.g. `xxfld 2`).
 - `xxup`: If there's something in all caps, it gets lower cased and a token called `xxup` will get added to it. 
 
-#### With the data block API [[18:31](https://youtu.be/C9UdVPE3ynA?t=1111)]
+### With the data block API [[18:31](https://youtu.be/C9UdVPE3ynA?t=1111)]
 
 Personally, I more often use the data block API because there's less to remember about exactly what data bunch to use, and what parameters and so forth, and it can be a bit more flexible. 
 
@@ -243,7 +241,7 @@ Now let's grab the whole data set which has:
 - 25,000 interviews in validation
 - 50,000 unsupervised movie reviews (50,000 movie reviews that haven't been scored at all) 
 
-#### Language model [[19:44](https://youtu.be/C9UdVPE3ynA?t=1184)]
+### Language model [[19:44](https://youtu.be/C9UdVPE3ynA?t=1184)]
 
 We're going to start with the language model. Now the good news is, we don't have to train the Wikitext 103 language model. Not that it's difficult﹣you can just download the wikitext 103 corpus, and run the same code. But it takes two or three days on a decent GPU, so not much point in you doing it. You may as well start with ours. Even if you've got a big corpus of like medical documents or legal documents, you should still start with Wikitext 103. There's just no reason to start with random weights. It's always good to use transfer learning if you can.
 
@@ -301,7 +299,7 @@ data_lm.show_batch()
 
 
 
-#### Training [[22:29](https://youtu.be/C9UdVPE3ynA?t=1349)]
+### Training [[22:29](https://youtu.be/C9UdVPE3ynA?t=1349)]
 
 At this point things are going to look very familiar. We create a learner:
 
@@ -368,7 +366,7 @@ As you can see, even on a pretty beefy GPU that takes two or three hours. In fac
 
 
 
-#### Predicting with Language Model [[25:43](https://youtu.be/C9UdVPE3ynA?t=1543)]
+### Predicting with Language Model [[25:43](https://youtu.be/C9UdVPE3ynA?t=1543)]
 
 You can now run `learn.predict` and pass in the start of a sentence, and it will try and finish off that sentence for you.
 
@@ -394,7 +392,7 @@ learn.save_encoder('fine_tuned_enc')
 
 
 
-#### Classifier [[27:18](https://youtu.be/C9UdVPE3ynA?t=1638)]
+### Classifier [[27:18](https://youtu.be/C9UdVPE3ynA?t=1638)]
 
 Now we're ready to create our classifier. Step one, as per usual, is to create a data bunch, and we're going to do basically exactly the same thing:
 
@@ -543,7 +541,7 @@ That gets us a 94.4% accuracy after about half an hour or less of training. Ther
 
 If we compare it to last year's state of the art on IMDb, this is from The [CoVe paper](https://papers.nips.cc/paper/7209-learned-in-translation-contextualized-word-vectors.pdf) from McCann et al. at Salesforce Research. Their paper was 91.8% accurate. And the best paper they could find, they found a fairly domain-specific sentiment analysis paper from 2017, they've got 94.1%. And here, we've got 94.4%. And the best models I've been able to build aince have been about 95.1%. So if you're looking to do text classification, this really standardized transfer learning approach works super well.
 
-### Tabular [[33:10](https://youtu.be/C9UdVPE3ynA?t=1990)]
+## Tabular [[33:10](https://youtu.be/C9UdVPE3ynA?t=1990)]
 
 ![](lesson4/3.png)
 
@@ -565,7 +563,7 @@ Some of that idea comes from a researcher named Frank Hutter and one of his coll
 
 
 
-### Back to Tabular [[36:41](https://youtu.be/C9UdVPE3ynA?t=2201)]
+## Back to Tabular [[36:41](https://youtu.be/C9UdVPE3ynA?t=2201)]
 
 Let's talk about tabular data. Tabular data such as you might see in a spreadsheet, a relational database, or financial report, it can contain all kinds of different things. I tried to make a little list of some of the kinds of things that I've seen tabular data analysis used for:
 
@@ -577,7 +575,7 @@ One of the key things that comes up again and again is that although feature eng
 
 One of the things that's made it difficult is that until now there hasn't been an easy way to create and train tabular neural nets. Nobody has really made it available in a library. So we've actually just created `fastai.tabular` and I think this is pretty much the first time that's become really easy to use neural nets with tabular data. So let me show you how easy it is.
 
-#### Tabular examples [[39:51](https://youtu.be/C9UdVPE3ynA?t=2391)]
+### Tabular examples [[39:51](https://youtu.be/C9UdVPE3ynA?t=2391)]
 
 [lesson4-tabular.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson4-tabular.ipynb)
 
@@ -628,13 +626,13 @@ As per usual, I think it's nice to use the data block API. So in this case, the 
 - What the path that you're going to use to save models and intermediate steps is.
 - Then you need to tell it what are your categorical variables and what are your continuous variables. 
 
-##### Continuous vs. Categorical [[43:07](https://youtu.be/C9UdVPE3ynA?t=2587)]
+#### Continuous vs. Categorical [[43:07](https://youtu.be/C9UdVPE3ynA?t=2587)]
 
 We're going to be learning a lot more about what that means to the neural net next week, but for now the quick summary is this. Your independent variables are the things that you're using to make predictions with. So things like education, marital status, age, and so forth. Some of those variables like age are basically numbers. They could be any number. You could be 13.36 years old or 19.4 years old or whatever. Where else, things like marital status are options that can be selected from a discrete group: married, single, divorced, whatever. Sometimes those options might be quite a lot more, like occupation. There's a lot of possible occupations. And sometimes, they might be binary (i.e. true or false). But anything which you can select the answer from a small group of possibilities is called a **categorical variable**. So we're going to need to use a different approach in the neural net to modeling categorical variables to what we use for continuous variables. For categorical variables, we're going to be using something called **embeddings** which we'll be learning about later today. For continuous variables, they could just be sent into the neural net just like pixels in a neural net can. Because pixels in a neural net are already numbers; these continuous things are already numbers as well. So that's easy. 
 
 So that's why you have to tell the tabular list from data frame which ones are which. There are some other ways to do that by pre-processing them in Pandas to make things categorical variables, but it's kind of nice to have one API for doing everything; you don't have to think too much about it.
 
-##### Processor [[45:04](https://youtu.be/C9UdVPE3ynA?t=2704)]
+#### Processor [[45:04](https://youtu.be/C9UdVPE3ynA?t=2704)]
 
 Then we've got something  which is a lot like transforms in computer vision. Transforms in computer vision do things like flip a photo on its axis, turn it a bit, brighten it, or normalize it. But for tabular data, instead of having transforms, we have things called processes. And they're nearly identical but the key difference, which is quite important, is that a processor is something that happens ahead of time. So we basically pre-process the data frame rather than doing it as we go. So transformations are really for data augmentation﹣we want to randomize it and do it differently each time. Or else, processes are the things that you want to do once, ahead of time.
 
@@ -711,7 +709,7 @@ We're gonna learn what `layers=` means either towards the end of class today or 
 
 So that's how to do tabular. This is going to work really well because we're gonna hit our break soon. And the idea was that after three and a half lessons, we're going to hit the end of all of the quick overview of applications, and then I'm going to go down on the other side. I think we're going to be to the minute, we're going to hit it. Because the next one is collaborative filtering.
 
-### Collaborative Filtering [[53:08](https://youtu.be/C9UdVPE3ynA?t=3188)]
+## Collaborative Filtering [[53:08](https://youtu.be/C9UdVPE3ynA?t=3188)]
 
 Collaborative filtering is where you have information about who bought what, or who liked what﹣ it's basically something where you have something like a user, a reviewer, or whatever and information about what they've bought, what they've written about, or what they reviewed. So in the most basic version of collaborative filtering, you just have two columns: something like user ID and movie ID and that just says this user bought that movie. So for example, Amazon has a really big list of user IDs and product IDs like what did you buy. Then you can add additional information to that table such as oh, they left a review, what review did they give it? So it's now like user ID, movie ID, number of stars. You could add a timecode so  this user bought this product at this time and gave it this review. But they are all basically the same structure.  
 
@@ -799,7 +797,7 @@ epoch  train_loss  valid_loss
 
 Now that you've got a learner, you can go ahead and call `fit_one_cycle` and trains for a few epochs, and there it is. So at the end of it, you now have something where you can pick a user ID and a movie ID, and guess whether or not that user will like that movie.
 
-#### Cold start problem [[58:55](https://youtu.be/C9UdVPE3ynA?t=3535)]
+### Cold start problem [[58:55](https://youtu.be/C9UdVPE3ynA?t=3535)]
 
 This is obviously a super useful application that a lot of you are probably going to try during the week. In past classes, a lot of people have taken this collaborative filtering approach back to their workplaces and discovered that using it in practice is much more tricky than this. Because in practice, you have something called the cold start problem. So the cold start problem is that the time you particularly want to be good at recommending movies is when you have a new user, and the time you particularly care about recommending a movie is when it's a new movie. But at that point, you don't have any data in your collaborative filtering system and it's really hard. 
 
@@ -841,13 +839,13 @@ I'm gonna have to look that up. If you know a good resource, please mention it o
 
 
 
-#### The half way point [[1:06:34](https://youtu.be/C9UdVPE3ynA?t=3994)]
+### The half way point [[1:06:34](https://youtu.be/C9UdVPE3ynA?t=3994)]
 
 That is both the break in the middle of lesson 4, it's the halfway point of the course, and it's the point at which we have now seen an example of all the key applications. So the rest of this course is going to be digging deeper into how they actually work behind the scenes, more of the theory, more of how the source code is written, and so forth. So it's a good time to have a nice break. Furthermore, it's my birthday today, so it's a really special moment.
 
 
 
-### Collaborative filter with Microsoft Excel [[1:07:25](https://youtu.be/C9UdVPE3ynA?t=4045)]
+## Collaborative filter with Microsoft Excel [[1:07:25](https://youtu.be/C9UdVPE3ynA?t=4045)]
 
 [collab_filter.xlsx](https://github.com/fastai/course-v3/blob/master/files/xl/collab_filter.xlsx)
 
@@ -855,7 +853,7 @@ That is both the break in the middle of lesson 4, it's the halfway point of the 
 
 Microsoft Excel is one of my favorite ways to explore data and understand models. I'll make sure I put this in the repo, and actually this one, we can probably largely do in Google sheets. I've tried to move as much as I can over the last few weeks into Google sheets, but I just keep finding this is such a terrible product, so please try to find a copy of Microsoft Excel because there's nothing close, I've tried everything. Anyway, spreadsheets get a bad rap from people that basically don't know how to use them. Just like people who spend their life on Excel and then they start using Python, and they're like what the heck is this stupid thing.  It takes thousands of hours to get really good at spreadsheets, but a few dozen hours to get confident at them. Once you're confident at them, you can see everything in front of you. It's all laid out, it's really great. 
 
-### Jeremy's spreadsheet tip of the day!  [[1:08:37](https://youtu.be/C9UdVPE3ynA?t=4117)]
+## Jeremy's spreadsheet tip of the day!  [[1:08:37](https://youtu.be/C9UdVPE3ynA?t=4117)]
 
 I'll give you one spreadsheet tip today which is if you hold down the <kbd>ctrl</kbd> key or <kbd>command</kbd> key on your keyboard and press the arrow keys, here's <kbd>ctrl</kbd>+<kbd>➜</kbd>, it takes you to the end of a block of a table that you're in. And it's by far the best way to move around the place, so there you go.
 
@@ -879,7 +877,7 @@ So how do we do that? Well, we set this up now as a linear model, so the next th
 
 Here is a number that is the square root of the mean squared error. You sometimes you'll see people talk about MSE so that's the Mean Squared Error, sometimes you'll see RMSE that's the Root Mean Squared Error. Since I've got a square root at the front, this is the square root mean square error.
 
-#### Excel Solver [[1:14:30](https://youtu.be/C9UdVPE3ynA?t=4470)]
+### Excel Solver [[1:14:30](https://youtu.be/C9UdVPE3ynA?t=4470)]
 
 We have a loss, so now all we need to do is use gradient descent to try to modify our weight matrices to make that loss smaller. Excel will do that for me. 
 
@@ -953,7 +951,7 @@ All it does is it calls this PyTorch thing called `nn.Embedding`. In PyTorch, th
 
 
 
-#### Embedding [[1:21:41](https://youtu.be/C9UdVPE3ynA?t=4901)]
+### Embedding [[1:21:41](https://youtu.be/C9UdVPE3ynA?t=4901)]
 
 So what's an embedding? An embedding, not surprisingly, is a matrix of weights. Specifically, an embedding is a matrix of weights that looks something like this:
 
@@ -965,7 +963,7 @@ It's a matrix of weights which you can basically look up into, and grab one item
 
 But if you think about it, that's not quite enough. Because we're missing this idea that maybe there are certain movies that everybody likes more. Maybe there are some users that just tend to like movies more. So I don't really just want to multiply these two vectors together, but I really want to add a single number of like how popular is this movie, and add a single number of like how much does this user like movies in general. So those are called "bias" terms. Remember how I said there's this idea of bias and the way we dealt with that in our gradient descent notebook was we added a column of 1's. But what we tend to do in practice is we actually explicitly say I want to add a bias term. So we don't just want to have prediction equals dot product of these two things, we want to say it's the dot product of those two things plus a bias term for a movie plus a bias term for user ID.
 
-#### Back to code [[1:23:55](https://youtu.be/C9UdVPE3ynA?t=5035)]
+### Back to code [[1:23:55](https://youtu.be/C9UdVPE3ynA?t=5035)]
 
 So that's basically what happens. We when we set up the model, we set up the embedding matrix for the users and the embedding matrix for the items. And then we also set up the bias vector for the users and the bias vector for the items.
 
@@ -993,7 +991,7 @@ So that means that this tiny little neural network, I mean it's a push to call i
 
 You like my setup? There's almost nothing in my setup. It's pretty bare honestly. I mean whatever you're doing with your editor, you probably want it to look like this which is when you've got a class that you're not currently working on it should be this is called folded/folding﹣it should be closed up so you can't see it. So you basically want something where it's easy to close and open folds, so vim already does all this for you. Then as I mentioned, you also want something where you can jump to the definition of things which in vim called using tags (e.g. to jump to the definition of `Learner`, position the cursor over `Learner` and hit <kbd>Ctrl</kbd>+<kbd>]</kbd>). Basically vim already does all this for you. You just have to read instructions. My .vimrc is minimal. I basically hardly use any extensions or anything. Another great editor to use is a [Visual Studio Code](https://code.visualstudio.com/). It's free and it's awesome and it has all the same features that you're seeing that vim does, basically VS Sode does all of those things as well. I quite like using vim because I can use it on the remote machine and play around, but you can of course just clone the git repo into your local computer and open it up with VS Code to play around with. Just don't try and look through the code just on github or something. That's going to drive you crazy. You need to be able to open it and close it and jump and jump back. Maybe people can create some threads on the forum for vim tips, VS Code tips, Sublime tips, whatever. For me, I would if you're gonna pick an editor, if you want to use something on your local, I would go with the VS Code today. I think it's the best. If you want to use something on the terminal side, I would go with VIM or Emacs, to me they're clear winners.
 
-### Overview of important terminology [[1:31:24](https://youtu.be/C9UdVPE3ynA?t=5484)]
+## Overview of important terminology [[1:31:24](https://youtu.be/C9UdVPE3ynA?t=5484)]
 
 So what I wanted to close with today is, to take this collaborative filtering example and describe how we're going to build on top of it for the next three lessons to create the more complex neural networks we've been seeing. Roughly speaking, this is the bunch of concepts that we need to learn about:
 
@@ -1061,3 +1059,5 @@ So what we did in our collaborative filtering example, we did something interest
 So that's nearly it. Inputs, weights, activations, activation functions (which we sometimes call nonlinearities), output, and then the function that compares those two things together is called the loss function, which so far we've used MSE.
 
 That's enough for today. So what we're going to do next week is we're going to kind of add in a few more extra bits which is we're going to learn the loss function that's used for classification called **cross-entropy**, we're going to use the activation function that's used for single label classification called **softmax**, and we're also going to learn exactly what happens when we do fine-tuning in terms of how these layers actually, what happens with unfreeze, and what happens when we create transfer learning. Thanks everybody! Looking forward to seeing you next week.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

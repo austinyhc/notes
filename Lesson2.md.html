@@ -1,12 +1,10 @@
-# Lesson 2
-
 [Video](https://youtu.be/Egp4Zajhzog) / [Lesson Forum]((https://forums.fast.ai/t/lesson-2-official-resources-and-updates/28630)) / [General Forum]((https://forums.fast.ai/t/faq-resources-and-official-course-updates/27934/))
 
-## Deeper Dive into Computer Vision
+# Deeper Dive into Computer Vision
 
 Taking a deeper dive into computer vision applications, taking some of the amazing stuff you've all been doing during the week, and going even further.
 
-### Forum tips and tricks [[0:17]](https://youtu.be/Egp4Zajhzog?t=17)
+## Forum tips and tricks [[0:17]](https://youtu.be/Egp4Zajhzog?t=17)
 
 Two important forum topics:
 
@@ -15,13 +13,13 @@ Two important forum topics:
 - [Lesson 2 official resources and updates](https://forums.fast.ai/t/lesson-2-official-resources-and-updates/28630)
 
 
-#### "Summarize This Topic" [[2:32]](https://youtu.be/Egp4Zajhzog?t=152)
+### "Summarize This Topic" [[2:32]](https://youtu.be/Egp4Zajhzog?t=152)
 
 After just one week, the most popular thread has 1.1k replies which is intimidatingly large number. You shouldn't need to read all of it.  What you should do is click "Summarize This Topic" and it will only show the most liked ones.
 
 ![](lesson2/1.png)
 
-####  Returning to work [[3:19]](https://youtu.be/Egp4Zajhzog?t=199)
+###  Returning to work [[3:19]](https://youtu.be/Egp4Zajhzog?t=199)
 
 https://course-v3.fast.ai/ now has a "Returning to work" section which will show you (for each specific platform you use):
 
@@ -32,7 +30,7 @@ If things aren't working for you, if you get into some kind of messy situation, 
 
 
 
-### What people have been doing this week [[4:19]](https://youtu.be/Egp4Zajhzog?t=259)
+## What people have been doing this week [[4:19]](https://youtu.be/Egp4Zajhzog?t=259)
 
 [Share your work here](https://forums.fast.ai/t/share-your-work-here/27676/) 
 
@@ -130,13 +128,13 @@ This approach is based on a lot of academic research into learning theory. One g
 
 
 
-## Teddy bear detector using Google Images [[16:21](https://youtu.be/Egp4Zajhzog?t=981)]
+# Teddy bear detector using Google Images [[16:21](https://youtu.be/Egp4Zajhzog?t=981)]
 
 Let's dig into our first notebook which is called [lesson2-download.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson2-download.ipynb). What we are going to do is we are going to see how to create your own classifier with your own images. It's going to be a lot like last week's pet detector but it will detect whatever you like. So to be like some of those examples we just saw. How would you create your own Panama bus detector from scratch. This is approach is inspired by Adrian Rosebrock who has a terrific website called [pyimagesearch](https://www.pyimagesearch.com/) and he has this nice explanation of  [how to create a deep learning dataset using Google Images](https://www.pyimagesearch.com/2017/12/04/how-to-create-a-deep-learning-dataset-using-google-images/). So that was definitely an inspiration for some of the techniques we use here, so thank you to Adrian and you should definitely check out his site. It's full of lots of good resources.
 
 We are going to try to create a teddy bear detector. And we're going to separate teddy bears from black bears, from grizzly bears. This is very important. I have a three year old daughter and she needs to know what she's dealing with. In our house, you would be surprised at the number of monsters, lions, and other terrifying threats that are around particularly around Halloween. So we always need to be on the lookout to make sure that the things we're about to cuddle is in fact a genuine teddy bear. So let's deal with that situation as best as we can.
 
-### Step 1: Gather URLs of each class of images
+## Step 1: Gather URLs of each class of images
 
 Our starting point is to find some pictures of teddy bears so we can learn what they look like. So I go to  https://images.google.com/ and I type in Teddy bear and I just scroll through until I find a goodly bunch of them. Okay, that looks like plenty of teddy bears to me.
 
@@ -153,7 +151,7 @@ This is a Javascript console for those of you who haven't done any Javascript be
 
 
 
-### Step 2: Download images [[19:39](https://youtu.be/Egp4Zajhzog?t=1179)]
+## Step 2: Download images [[19:39](https://youtu.be/Egp4Zajhzog?t=1179)]
 
 So step 2 is we now need to download those URLs to our server. Because remember when we're using Jupyter Notebook, it's not running on our computer. It's running on SageMaker or Crestle, or Google cloud, etc. So to do that, we start running some Jupyer cells. Let's grab the fastai library:
 
@@ -214,13 +212,13 @@ It's a really controversial topic. For a lot of people, they feel this is "wrong
 So that will download the images to your server. It's going to use multiple processes to do so. One problem there is if something goes wrong, it's a bit hard to see what went wrong. So you can see in the next section, there's a commented out section that says `max_workers=0`. That will do it without spinning up a bunch of processes and will tell you the errors better. So if things aren't downloading, try using the second version. 
 
 ```python
-# If you have problems download, try with `max_workers=0` to see exceptions:
-# download_images(path/file, dest, max_pics=20, max_workers=0)
+ If you have problems download, try with `max_workers=0` to see exceptions:
+ download_images(path/file, dest, max_pics=20, max_workers=0)
 ```
 
 
 
-### Step 3: Create ImageDataBunch [[22:50](https://youtu.be/Egp4Zajhzog?t=1370)]
+## Step 3: Create ImageDataBunch [[22:50](https://youtu.be/Egp4Zajhzog?t=1370)]
 
 The next thing that I found I needed to do was to remove the images that aren't actually images at all. This happens all the time. There's always a few images in every batch that are corrupted for whatever reason. Google image told us this URL had an image but it doesn't anymore. So we got this thing in the library called `verify_images` which will check all of the images in a path and will tell you if there's a problem. If you say `delete=True`, it will actually delete it for you. So that's a really nice easy way to end up with a clean dataset. 
 
@@ -282,7 +280,7 @@ data.classes, data.c, len(data.train_ds), len(data.valid_ds)
 
 
 
-### Step 4: Training a model [[26:49](https://youtu.be/Egp4Zajhzog?t=1609)]
+## Step 4: Training a model [[26:49](https://youtu.be/Egp4Zajhzog?t=1609)]
 
 So at that point, we can go ahead and create our convolutional neural network using that data. I tend to default to using a resnet34, and let's print out the error rate each time.
 
@@ -358,7 +356,7 @@ learn.save('stage-2')
 
 
 
-### Interpretation [[29:38](https://youtu.be/Egp4Zajhzog?t=1778)]
+## Interpretation [[29:38](https://youtu.be/Egp4Zajhzog?t=1778)]
 
 As per usual, we can use the ClassificationInterpretation class to have a look at what's going on.
 
@@ -407,7 +405,7 @@ Really, if you've done any GUI programming before, it'll look incredibly normal.
 
 I'd love for you to have a think about, now that you know it's possible to write applications in your notebook, what are you going to write and if you google for "[ipywidgets](https://ipywidgets.readthedocs.io/en/stable/)", you can learn about the little GUI framework to find out what kind of widgets you can create, what they look like, and how they work, and so forth. You'll find it's actually a pretty complete GUI programming environment you can play with. And this will all work nice with your models. It's not a great way to productionize an application because it is sitting inside a notebook. This is really for things which are going to help other practitioners or experimentalists. For productionizing things, you need to actually build a production web app which we will look at next. 
 
-### Putting your model in production [[37:36](https://youtu.be/Egp4Zajhzog?t=2256)]
+## Putting your model in production [[37:36](https://youtu.be/Egp4Zajhzog?t=2256)]
 
 After you have cleaned up your noisy images, you can then retrain your model and hopefully you'll find it's a little bit more accurate. One thing you might be interested to discover when you do this is it actually doesn't matter most of the time very much. On the whole, these models are pretty good at dealing with moderate amounts of noisy data. The problem would occur is if your data was not randomly noisy but biased noisy. So I guess the main thing I'm saying is if you go through this process of cleaning up your data and then rerun your model and find it's .001% better, that's normal. It's fine. But it's still a good idea just to make sure that you don't have too much noise in your data in case it is biased.
 
@@ -432,7 +430,7 @@ data.classes
 If you don't have a GPU on your server, it will use the CPU automatically. If you have a GPU machine and you want to test using a CPU, you can just uncomment this line and that tells fastai that you want to use CPU by passing it back to PyTorch.  
 
 ```python
-# fastai.defaults.device = torch.device('cpu')
+ fastai.defaults.device = torch.device('cpu')
 ```
 
 
@@ -499,7 +497,7 @@ So give it a go this week. Even if you've never created a web application before
 
 https://course-v3.fast.ai/deployment_zeit.html
 
-### Things that can go wrong [[46:06](https://youtu.be/Egp4Zajhzog?t=2766)]
+## Things that can go wrong [[46:06](https://youtu.be/Egp4Zajhzog?t=2766)]
 
 I mentioned that most of the time, the kind of rules of thumb I've shown you will probably work. And if you look at the share your work thread, you'll find most of the time, people are posting things saying I downloaded these images, I tried this thing, they worked much better than I expected, well that's cool. Then like 1 out of 20 says I had a problem. So let's have a talk about what happens when you have a problem. This is where we start getting into a little bit of theory because in order to understand why we have these problems and how we fix them, it really helps to know a little bit about what's going on.
 
@@ -510,7 +508,7 @@ First of all, let's look at examples of some problems. The problems basically wi
 
 So we are going to learn about what those mean and why they matter. But first of all, because we are experimentalists, let's try them. 
 
-#### Learning rate (LR) too high
+### Learning rate (LR) too high
 
 So let's grow with our teddy bear detector and let's make our learning rate really high. The default learning rate is 0.003 that works most of the time. So what if we try a learning rate of 0.5. That's huge. What happens? Our validation loss gets pretty darn high. Remember, this is something that's normally something underneath 1. So if you see your validation loss do that, before we even learn what validation loss is, just know this, if it does that, your learning rate is too high. That's all you need to know. Make it lower. Doesn't matter how many epochs you do. If this happens, there's no way to undo this. You have to go back and create your neural net again and fit from scratch with a lower learning rate.
 
@@ -530,7 +528,7 @@ epoch  train_loss  valid_loss  error_rate
 
 
 
-#### Learning rate (LR) too low [[48:02](https://youtu.be/Egp4Zajhzog?t=2882)]
+### Learning rate (LR) too low [[48:02](https://youtu.be/Egp4Zajhzog?t=2882)]
 
 What if we used a learning rate not of 0.003 but 1e-5 (0.00001)? 
 
@@ -585,7 +583,7 @@ As well as taking a really long time, it's getting too many looks at each image,
 
 
 
-#### Too few epochs [[49:42](https://youtu.be/Egp4Zajhzog?t=2982)]
+### Too few epochs [[49:42](https://youtu.be/Egp4Zajhzog?t=2982)]
 
 What if we train for just one epoch? Our error rate is certainly better than random, 5%. But look at this, the difference between training loss and validation loss ﹣ a training loss is much higher than the validation loss. So too few epochs and too lower learning rate look very similar. So you can just try running more epochs and if it's taking forever, you can try a higher learning rate. If you try a higher learning rate and the loss goes off to 100,000 million, then put it back to where it was and try a few more epochs. That's the balance. That's all you care about 99% of the time. And this is only the 1 in 20 times that the defaults don't work for you.
 
@@ -605,7 +603,7 @@ epoch  train_loss  valid_loss  error_rate
 
 
 
-#### Too many epochs [[50:30](https://youtu.be/Egp4Zajhzog?t=3030)]
+### Too many epochs [[50:30](https://youtu.be/Egp4Zajhzog?t=3030)]
 
 Too many epochs create something called "overfitting". If you train for too long as we're going to learn about it, it will learn to recognize your particular teddy bears but not teddy bears in general. Here is the thing. Despite what you may have heard, it's very hard to overfit with deep learning. So we were trying today to show you an example of overfitting and I turned off everything. I turned off all the data augmentation, dropout, and weight decay. I tried to make it overfit as much as I can. I trained it on a small-ish learning rate, I trained it for a really long time. And maybe I started to get it to overfit. Maybe. 
 
@@ -752,7 +750,7 @@ So that's kind of don't have to think about it, don't really have to know what's
 
 
 
-#### Digging in and looking at the math [[1:01:17](https://youtu.be/Egp4Zajhzog?t=3677)]
+### Digging in and looking at the math [[1:01:17](https://youtu.be/Egp4Zajhzog?t=3677)]
 
 We're going to create this mathematical function that takes the numbers that represent the pixels and spits out probabilities for each possible class. 
 
@@ -870,7 +868,7 @@ So why did we all this? It's because I wanted to be able to write it out like th
 
 It really wants you to send it a whole equation to do all at once. Which means, you really want to try and specify things in these kind of linear algebra ways. So let's go and take a look because what we're going to try and do then is we're going to try and take this <img src="http://latex.codecogs.com/gif.latex?\vec{y}&space;=&space;X\vec{a}" title="\vec{y} = X\vec{a}" /> (we're going to call this an architecture). It's the world's tiniest neural network. It's got two parameters <img src="http://latex.codecogs.com/gif.latex?a_1" title="a_1" /> and <img src="http://latex.codecogs.com/gif.latex?a_2" title="a_2" />. We are going to try and fit this architecture to some data. 
 
-### SGD [[1:15:06](https://youtu.be/Egp4Zajhzog?t=4506)]
+## SGD [[1:15:06](https://youtu.be/Egp4Zajhzog?t=4506)]
 
 So let's jump into a notebook and generate some dots, and see if we can get it to fit a line somehow. And the "somehow" is going to be using something called SGD. What is SGD? Well, there's two types of SGD. The first one is where I said in lesson 1 "hey you should all try building these models and try and come up with something cool" and you guys all experimented and found really good stuff. So that's where the S would be Student. That would be Student Gradient Descent. So that's version one of SGD.
 
@@ -878,7 +876,7 @@ Version two of SGD which is what I'm going to talk about today is where we are g
 
 
 
-#### Linear Regression problem [[1:16:08](https://youtu.be/Egp4Zajhzog?t=4568)]
+### Linear Regression problem [[1:16:08](https://youtu.be/Egp4Zajhzog?t=4568)]
 
 We are going to jump into [lesson2-sgd.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson2-sgd.ipynb). We are going to go bottom-up rather than top-down. We are going to create the simplest possible model we can which is going to be a linear model. And the first thing we need is we need some data. So we are going to generate some data. The data we're going to generate looks like this:
 
@@ -1011,7 +1009,7 @@ The reason this is hard to digest is that the human brain has a lot of trouble c
 
 
 
-### Loss function [[1:28:36](https://youtu.be/Egp4Zajhzog?t=5316)]
+## Loss function [[1:28:36](https://youtu.be/Egp4Zajhzog?t=5316)]
 
 We want to find what PyTorch calls **parameters**, or in statistics, you'll often hear it called coefficient (i.e. these values of <img src="http://latex.codecogs.com/gif.latex?a_1" title="a_1" /> and <img src="http://latex.codecogs.com/gif.latex?a_2" title="a_2" />). We want to find these parameters such that the line that they create minimizes the error between that line and the points. In other words, if the <img src="http://latex.codecogs.com/gif.latex?a_1" title="a_1" /> and <img src="http://latex.codecogs.com/gif.latex?a_2" title="a_2" /> we came up with resulted in this line: 
 
@@ -1141,7 +1139,7 @@ So here is what we're going to do. We are going to create a loop. We're going to
 
 - `lr` is our learning rate. All it is is the thing that we multiply by the gradient. Why is there any `lr` at all? Let me show you why.
 
-#### Why is there any LR at all? [[1:41:31](https://youtu.be/Egp4Zajhzog?t=6091)]
+### Why is there any LR at all? [[1:41:31](https://youtu.be/Egp4Zajhzog?t=6091)]
 
 Let's take a really simple example, a quadratic. And let's say your algorithm's job was to find where that quadratic was at its lowest point. How could it do this? Just like what we're doing now, the starting point would be just to pick some x value at random. Then find out what the value of y is. That's the starting point. Then it can calculate the gradient and the gradient is simply the slope, but it tells you moving in which direction is make you go down. So the gradient tells you, you have to go this way.
 ![](lesson2/lr.gif)
@@ -1168,7 +1166,7 @@ You will find something that says "coefficients ﹣ learning rate times gradient
 
 That's about it. There's a couple of other little minor issues that we don't need to talk about now: one involving zeroing out the gradient and other involving making sure that you turn gradient calculation off when you do the SGD update. If you are interested, we can discuss them on the forum or you can do our introduction to machine learning course which covers all the mechanics of this in more detail.
 
-#### Training loop [[1:45:43](https://youtu.be/Egp4Zajhzog?t=6343)]
+### Training loop [[1:45:43](https://youtu.be/Egp4Zajhzog?t=6343)]
 
 If we run `update` 100 times printing out the loss from time to time, you can see it starts at  8.9, and it goes down.
 
@@ -1201,7 +1199,7 @@ plt.scatter(x[:,0],x@a);
 
  That's it! Believe it or not, that's gradient descent. So we just need to start with a function that's a bit more complex than `x@a` but as long as we have a function that can represent things like if this is a teddy bear, we now have a way to fit it.
 
-#### Animate it! [[1:46:20](https://youtu.be/Egp4Zajhzog?t=6380)]
+### Animate it! [[1:46:20](https://youtu.be/Egp4Zajhzog?t=6380)]
 
 Let's now take a look at this as an animation. This is one of the nice things that you can do with matplotlib. You can take any plot and turn it into an animation. So you can now actually see it updating each step. 
 
@@ -1216,10 +1214,10 @@ rc('animation', html='html5')
 > If you are running in colab, the installs are not needed; just change the cell above to be ... html='jshtml' instead of ... html='html5'
 
 ```python
-#! sudo add-apt-repository -y ppa:mc3man/trusty-media  
-#! sudo apt-get update -y 
-#! sudo apt-get install -y ffmpeg  
-#! sudo apt-get install -y frei0r-plugins
+! sudo add-apt-repository -y ppa:mc3man/trusty-media  
+! sudo apt-get update -y 
+! sudo apt-get install -y ffmpeg  
+! sudo apt-get install -y frei0r-plugins
 ```
 
 Let's see what we did here. We simply said, as before, create a scatter plot, but then rather than having a loop, we used matplotlib's `FuncAnimation` to call 100 times this `animate` function.  And this function just calls that `update` we created earlier then update the `y` data in our line. Repeat that 100 times, waiting 20 milliseconds after each one.  
@@ -1246,7 +1244,7 @@ You might think visualizing your algorithms with animations is something amazing
 
 That is SGD visualized and we can't visualize as conveniently what updating 50 million parameters in a ResNet 34 looks like but basically doing the same thing. So studying these simple version is actually a great way to get an intuition. So you should try running this notebook with a really big learning rate, with a really small learning rate, and see what this animation looks like, and try to get a feel for it. Maybe you can even try a 3D plot. I haven't tried that yet, but I'm sure it would work fine.
 
-#### Mini-batches [[1:48:08](https://youtu.be/Egp4Zajhzog?t=6488)]
+### Mini-batches [[1:48:08](https://youtu.be/Egp4Zajhzog?t=6488)]
 
 The only difference between stochastic gradient descent and this is something called _mini-batches_. You'll see, what we did here was we calculated the value of the loss on the whole dataset on every iteration. But if your dataset is 1.5 million images in ImageNet, that's going to be really slow. Just to do a single update of your parameters, you've got to calculate the loss on 1.5 million images. You wouldn't want to do that. So what we do is we grab 64 images or so at a time at random, and we calculate the loss on those 64 images, and we update our weights. Then we have another 64 random images, and we update our weights. In other words, the loop basically looks exactly the same but add some random indexes on our `x` and `y` to do a mini-batch at a time, and that would be the basic difference.
 
@@ -1254,7 +1252,7 @@ The only difference between stochastic gradient descent and this is something ca
 
 Once you add those grab a random few points each time, those random few points are called your mini-batch, and that approach is called SGD for Stochastic Gradient Descent.
 
-#### Vocabulary [[1:49:40](https://youtu.be/Egp4Zajhzog?t=6580)]
+### Vocabulary [[1:49:40](https://youtu.be/Egp4Zajhzog?t=6580)]
 
 There's quite a bit of vocab we've just covered, so let's remind ourselves. 
 
@@ -1287,7 +1285,7 @@ She will introduce you to some of that academic research. If you think of yourse
 
 So don't freak out if words like derivative, gradient, and matrix product are things that you're kind of scared of. It's something you can learn. Something you'll be okay with.
 
-#### Underfitting and Overfitting [[1:54:42](https://youtu.be/Egp4Zajhzog?t=6882)]
+### Underfitting and Overfitting [[1:54:42](https://youtu.be/Egp4Zajhzog?t=6882)]
 
 The last thing I want to close with is the idea of underfitting and overfitting. We just fit a line to our data. But imagine that our data wasn't actually line shaped. So if we try to fit which was something like constant + constant times X (i.e. a line) to it, it's never going to fit very well. No matter how much we change these two coefficients, it's never going to get really close.
 
@@ -1297,7 +1295,7 @@ On the other hand, we could fit some much bigger equation, so in this case it's 
 
 We are looking for some mathematical function that fits just right to stay with a teddy bear analogies. You might think if you have a statistics background, the way to make things it just right is to have exactly the same number of parameters (i.e. to use a mathematical function that doesn't have too many parameters in it). It turns out that's actually completely not the right way to think about it. 
 
-### Regularization and Validation Set [[1:56:07](https://youtu.be/Egp4Zajhzog?t=6967)]
+## Regularization and Validation Set [[1:56:07](https://youtu.be/Egp4Zajhzog?t=6967)]
 
 There are other ways to make sure that we don't overfit. In general, this is called regularization. Regularization or all the techniques to make sure when we train our model that it's going to work not only well on the data it's seen but on the data it hasn't seen yet. The most important thing to know when you've trained a model is actually how well does it work on data that it hasn't been trained with. As we're going to learn a lot about next week, that's why we have this thing called a validation set. 
 
@@ -1306,3 +1304,5 @@ What happens with the validation set is that we do our mini-batch SGD training l
 Even for people that don't go through this course and don't learn about the details of deep learning, if you've got managers or colleagues at work who are wanting to learn about AI, the only thing that you really need to be teaching them is about the idea of a validation set. Because that's the thing they can then use to figure out if somebody's telling them snake oil or not. They hold back some data and they get told "oh, here's a model that we're going to roll out" and then you say "okay, fine. I'm just going to check it on this held out data to see whether it generalizes." There's a lot of details to get right when you design your validation set. We will talk about them briefly next week, but a more full version would be in Rachel's piece on the fast.ai blog called [How (and why) to create a good validation set](https://www.fast.ai/2017/11/13/validation-sets/). And this is also one of the things we go into in a lot of detail in the intro to machine learning course. So we're going to try and give you enough to get by for this course, but it is certainly something that's worth deeper study as well.
 
 Thanks everybody! I hope you have a great time building your web applications. See you next week.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,5 +1,3 @@
-# Lesson 7
-
 [Video](https://youtu.be/nWpdkZE2_cc) / [Course Forum](https://forums.fast.ai/t/lesson-7-official-resources/32553)
 
 Welcome to lesson 7! The last lesson of part 1. This will be a pretty intense lesson. Don't let that bother you because partly what I want to do is to give you enough things to think about to keep you busy until part 2. In fact, some of the things we cover today, I'm not going to tell you about some of the details. I'll just point out a few things. I'll say like okay that we're not talking about yet, that we're not talking about yet. Then come back in part 2 to get the details on some of these extra pieces. So today will be a lot of material pretty quickly. You might require a few viewings to fully understand at all or a few experiments and so forth. That's kind of intentional. I'm trying to give you stuff to to keep you amused for a couple of months.
@@ -8,7 +6,7 @@ Welcome to lesson 7! The last lesson of part 1. This will be a pretty intense le
 
 I wanted to start by showing some cool work done by a couple of students; Reshama and Nidhin who have developed an Android and an iOS app, so check out [Reshma's post on the forum](https://forums.fast.ai/t/share-your-work-here/27676/679?u=hiromi) about that because they have a demonstration of how to create both Android and iOS apps that are actually on the Play Store and on the Apple App Store, so that's pretty cool. First ones I know of that are on the App Store's that are using fast.ai. Let me also say a huge thank you to Reshama for all of the work she does both for the fast.ai community and the machine learning community more generally, and also the [Women in Machine Learning](https://wimlworkshop.org/) community in particular. She does a lot of fantastic work including providing lots of fantastic documentation and tutorials and community organizing and so many other things. So thank you, Reshama and congrats on getting this app out there.
 
-## MNIST CNN [[2:04](https://youtu.be/nWpdkZE2_cc?t=124)]
+# MNIST CNN [[2:04](https://youtu.be/nWpdkZE2_cc?t=124)]
 
 We have lots of lesson 7 notebooks today, as you see. The first notebook we're going to look at is [lesson7-resnet-mnist.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson7-resnet-mnist.ipynb). What I want to do is look at some of the stuff we started talking about last week around convolutions and convolutional neural networks, and start building on top of them to create a fairly modern deep learning architecture largely from scratch. When I say from scratch, I'm not going to re-implement things we already know how to implement, but use the pre-existing PyTorch bits of those. So we're going to use the MNIST dataset. `URLs.MNIST` has the whole MNIST dataset, often we've done stuff with a subset of it. 
 
@@ -215,7 +213,7 @@ bs = 128
 ```
 
 ```python
-# not using imagenet_stats because not using pretrained model
+ not using imagenet_stats because not using pretrained model
 data = ll.databunch(bs=bs).normalize()
 ```
 
@@ -266,7 +264,7 @@ data.show_batch(rows=3, figsize=(5,5))
 
 That was a quick walk through with a data block API stuff to grab our data.
 
-### Basic CNN with batch norm [11:01](https://youtu.be/nWpdkZE2_cc?t=661)
+## Basic CNN with batch norm [11:01](https://youtu.be/nWpdkZE2_cc?t=661)
 
 Let's start out creating a simple CNN. The input is 28 by 28. I like to define when I'm creating architectures a function which kind of does the things that I do again and again and again. I don't want to call it with the same arguments because I'll forget or I make a mistake. In this case, all of my convolution is going to be kernel size 3 stride 2 padding 1. So let's just create a simple function to do a conv with those parameters:
 
@@ -391,7 +389,7 @@ Total time: 00:18
 
 This is trained from scratch, of course, it's not pre-trained. We've literally created our own architecture. It's about the simplest possible architecture you can imagine. 18 seconds to train, so that's how easy it is to create a pretty accurate digit detector.
 
-### Refactor [15:42](https://youtu.be/nWpdkZE2_cc?t=942)
+## Refactor [15:42](https://youtu.be/nWpdkZE2_cc?t=942)
 
 Let's refactor that a little. Rather than saying conv, batch norm, ReLU all the time, fast.ai already has something called `conv_layer` which lets you create conv, batch norm, ReLU combinations. It has various other options to do other tweaks to it, but the basic version is just exactly what I just showed you. So we can refactor that like so:
 
@@ -437,7 +435,7 @@ Total time: 00:53
 
 Let's just try a little bit longer and it's actually 99.1% accurate if we train it for all of a minute, so that's cool.
 
-### ResNet-ish [16:24](https://youtu.be/nWpdkZE2_cc?t=984)
+## ResNet-ish [16:24](https://youtu.be/nWpdkZE2_cc?t=984)
 
 How can we improve this? What we really want to do is create a deeper network, and so a very easy way to create a deeper network would be after every stride 2 conv, add a stride 1 conv. Because the stride 1 conv doesn't change the feature map size at all, so you can add as many as you like. But there's a problem. The problem was pointed out in this paper, very very very influential paper, called [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) by Kaiming He and colleagues at (then) Microsoft Research.
 
@@ -465,11 +463,11 @@ So that was the theory. That's what the paper describes as the intuition behind 
 
 What happened was he won ImageNet that year. He easily won ImageNet that year. In fact, even today, we had that record-breaking result on ImageNet speed training ourselves in the last year, we used this too. ResNet has been revolutionary. 
 
-### ResBlock Trick [20:36](https://youtu.be/nWpdkZE2_cc?t=1236)
+## ResBlock Trick [20:36](https://youtu.be/nWpdkZE2_cc?t=1236)
 
 Here's a trick if you're interested in doing some research. Anytime you find some model for anything whether it's medical image segmentation or some kind of GAN or whatever and it was written a couple of years ago, they might have forgotten to put ResBlocks in. Figure 2 is what we normally call a ResBlock. They might have forgotten to put ResBlocks in. So replace their convolutional path with a bunch of ResBlocks and you will almost always get better results faster. It's a good trick.
 
-#### [Visualizing the Loss Landscape of Neural Nets](https://arxiv.org/abs/1712.09913) [[21:16](https://youtu.be/nWpdkZE2_cc?t=1276)]
+### [Visualizing the Loss Landscape of Neural Nets](https://arxiv.org/abs/1712.09913) [[21:16](https://youtu.be/nWpdkZE2_cc?t=1276)]
 
 At NeurIPS, which Rachel, I, David, and Sylvain all just came back from, we saw a new presentation where they actually figured out how to visualize the loss surface of a neural net which is really cool. This is a fantastic paper and anybody who's watching this lesson 7 is at a point where they will understand the most of the important concepts in this paper. You can read this now. You won't necessarily get all of it, but I'm sure you'll get it enough to find it interesting.
 
@@ -596,7 +594,7 @@ So you can see that what happens is that with dense blocks it's getting bigger a
 
 Also, because it's possible to keep those original input pixels all the way down the path, they work really well for segmentation. Because for segmentation, you want to be able to reconstruct the original resolution of your picture, so having all of those original pixels still there is a super helpful.
 
-### U-Net [[30:16](https://youtu.be/nWpdkZE2_cc?t=1816)]
+## U-Net [[30:16](https://youtu.be/nWpdkZE2_cc?t=1816)]
 
 That's ResNets. One of the main reasons other than the fact that ResNets are awesome to tell you about them is that these skipped connections are useful in other places as well. They are particularly useful in other places in other ways of designing architectures for segmentation. So in building this lesson, I keep trying to take old papers and imagining like what would that person have done if they had access to all the modern techniques we have now, and I try to rebuild them in a more modern style. So I've been really rebuilding this next architecture we're going to look at called U-Net in a more modern style recently, and got to the point now I keep showing you this semantic segmentation paper with the state of the art for CamVid which was 91.5.
 
@@ -1045,7 +1043,7 @@ Okay, so that's U-Net and it's amazing to think it preceded ResNet, preceded Den
 
 So identity connections, regardless of whether they're a plus style or a concat style, are incredibly useful. They can basically get us close to the state of the art on lots of important tasks. So I want to use them on another task now.
 
-### Image restoration [[48:31](https://youtu.be/nWpdkZE2_cc?t=2911)]
+## Image restoration [[48:31](https://youtu.be/nWpdkZE2_cc?t=2911)]
 
 The next task I want to look at is image restoration. Image restoration refers to starting with an image and this time we're not going to create a segmentation mask but we're going to try and create a better image. There's lots of kind of versions of better - there could be different image. The kind of things we can do with this kind of image generation would be:
 
@@ -1067,7 +1065,7 @@ Because if you did your convs before you concat, then there's no way for the cha
 
 That's a great question. If you have a stride 2 conv, you can't keep DenseNet-ing. That's what actually happens in a DenseNet is you kind of go like dense block, growing, dense block, growing, dense block, growing, so you are getting more and more channels. Then you do a stride 2 conv without a dense block, and so now it's kind of gone. Then you just do a few more dense blocks and then it's gone. So in practice, a dense block doesn't actually keep all the information all the way through, but just up until every one of these stride 2 convs. There's various ways of doing these bottlenecking layers where you're basically saying hey let's reset. It also helps us keep memory under control because at that point we can decide how many channels we actually want.
 
-#### Back to image restoration [[52:01](https://youtu.be/nWpdkZE2_cc?t=3121)]
+### Back to image restoration [[52:01](https://youtu.be/nWpdkZE2_cc?t=3121)]
 
 [lesson7-superres-gan.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson7-superres-gan.ipynb)
 
@@ -1106,7 +1104,7 @@ You can see this one (bottom row) there's the number, and this is after transfor
 
 It's trying to figure out how to take this incredibly JPEG artifactory thing with text written over the top, and turn it into this (image on the right). I'm using the Oxford pets data set again. The same one we used in lesson one. So there's nothing more high quality than pictures of dogs and cats, I think we can all agree with that. 
 
-#### `parallel` [[53:48](https://youtu.be/nWpdkZE2_cc?t=3228)]
+### `parallel` [[53:48](https://youtu.be/nWpdkZE2_cc?t=3228)]
 
 The crappification process can take a while, but fast.ai has a function called `parallel`. If you pass `parallel` a function name and a list of things to run that function on, it will run that function on them all in parallel. So this actually can run pretty quickly.
 
@@ -1211,7 +1209,7 @@ Let's unfreeze that and train a little more and look at that! With four minutes 
 
 We're not finished because we actually want this thing (middle) to look more like this thing (right). So how are we going to do that? The reason that we're not making as much progress with that as we'd like is that our loss function doesn't really describe what we want. Because actually, the mean squared error between the pixels of this (middle) and this (right) is actually very small. If you actually think about it, most of the pixels are very nearly the right color. But we're missing the texture of the pillow, and we're missing the eyeballs entirely pretty much. We're missing the texture of the fur. So we want some lost function that does a better job than pixel mean squared error loss of saying like is this a good quality picture of this thing.
 
-### Generative Adversarial Network [[59:23](https://youtu.be/nWpdkZE2_cc?t=3563)]
+## Generative Adversarial Network [[59:23](https://youtu.be/nWpdkZE2_cc?t=3563)]
 
 There's a fairly general way of answering that question, and it's something called a Generative adversarial network or GAN. A GAN tries to solve this problem by using a loss function which actually calls another model. Let me describe it to you.
 
@@ -1227,7 +1225,7 @@ So we'll just go ping pong ping pong, backwards and forwards. That's a GAN. That
 
 If you can find a way to generate things without using a GAN like mean squared pixel loss, and discriminate things without using a GAN like predict on that first generator, you can make a lot of progress.
 
-#### Creating a critic/discriminator [[1:04:04](https://youtu.be/nWpdkZE2_cc?t=3844)]
+### Creating a critic/discriminator [[1:04:04](https://youtu.be/nWpdkZE2_cc?t=3844)]
 
 Let's create the critic. To create just a totally standard fast.ai binary classification model, we need two folders; one folder containing high-res images, one folder containing generated images. We already have the folder with high-res images, so we just have to save our generated images.
 
@@ -1237,7 +1235,7 @@ path_gen = path/name_gen
 ```
 
 ```python
-# shutil.rmtree(path_gen)
+ shutil.rmtree(path_gen)
 ```
 
 ```python
@@ -1340,7 +1338,7 @@ Total time: 09:40
 | 5     | 0.099568   | 0.107304   | 0.962564               |
 | 6     | 0.071958   | 0.078094   | 0.976239               |
 
-#### Finishing up GAN [[1:09:52](https://youtu.be/nWpdkZE2_cc?t=4192)]
+### Finishing up GAN [[1:09:52](https://youtu.be/nWpdkZE2_cc?t=4192)]
 
 ```python
 learn_crit=None
@@ -1460,7 +1458,7 @@ Pretty beautiful, I would say. We already knew how to get rid of the numbers, bu
 
 U-Nets are for when the the size of your output is similar to the size of your input and kind of aligned with it. There's no point having cross connections if that level of spatial resolution in the output isn't necessary or useful. So yeah, any kind of generative modeling and segmentation is kind of generative modeling. It's generating a picture which is a mask of the original objects. So probably anything where you want that kind of resolution of the output to be at the same kind of fidelity as a resolution of the input. Obviously something like a classifier makes no sense. In a classifier, you just want the downsampling path because at the end you just want a single number which is like is it a dog, or a cat, or what kind of pet is it or whatever. 
 
-### Wasserstein GAN [[1:15:59](https://youtu.be/nWpdkZE2_cc?t=4559)]
+## Wasserstein GAN [[1:15:59](https://youtu.be/nWpdkZE2_cc?t=4559)]
 
 Just before we leave GANs, I just mention there's another notebook you might be interested in looking at which is [lesson7-wgan.ipynb](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson7-wgan.ipynb). When GANs started a few years ago, people generally use them to create images out of thin air which I personally don't think is a particularly useful or interesting thing to do. But it's a good research exercise, I guess. So we implemented this [WGAN paper](https://arxiv.org/abs/1701.07875) which was kind of really the first one to do a somewhat adequate job somewhat easily. You can see how to do that with the fast.ai library. 
 
@@ -1468,7 +1466,7 @@ It's kind of interesting because the the dataset that we use is this LSUN bedroo
 
 You'll see (in this case, we have a `show_image` on) after a epoch one, it's not creating great bedrooms or two or three. And you can really see that in the early days of these kinds of GANs, it doesn't do a great job of anything. But eventually, after a couple of hours of training, it's producing somewhat like bedroom-ish things. Anyway, it's a notebook you can have a play with, and it's a bit of fun.
 
-### Feature Loss [[1:18:37](https://youtu.be/nWpdkZE2_cc?t=4717)]
+## Feature Loss [[1:18:37](https://youtu.be/nWpdkZE2_cc?t=4717)]
 
 I was very excited when we got fast.ai to the point in the last week or so that we had GAN's working in a way where API wise, they're far more concise and more flexible than any other library that exists. But also kind of disappointed with them. They take a long time to train and the outputs are still like so-so, and so the next step was "can we get rid of GANs entirely?" Obviously, the thing we really want to do is come up with a better loss function. We want a loss function that does a good job of saying this is a high-quality image without having to go all the GAN trouble, and preferably it also doesn't just say it's a high-quality image but it's an image which actually looks like the thing is meant to. So the real trick here comes back to this paper from a couple of years ago, [Perceptual Losses for Real-Time Style Transfer and Super-Resolution](https://arxiv.org/abs/1603.08155) - Justin Johnson et al. created this thing they call perceptual losses. It's a nice paper, but I hate this term because they're nothing particularly perceptual about them. I would call them "feature losses", so in the fast.ai library, you'll see this referred to as feature losses.
 ![](lesson7/32.png)
@@ -1519,8 +1517,8 @@ def resize_one(fn,i):
 ```
 
 ```python
-# to create smaller images, uncomment the next line when you run this the first time
-# parallel(resize_one, il.items)
+ to create smaller images, uncomment the next line when you run this the first time
+ parallel(resize_one, il.items)
 ```
 
 ```python
@@ -1801,7 +1799,7 @@ All in all, we've done about an hour and twenty minutes of training and look at 
 
 Talking for markable, I've mean I've never seen outputs like this before without a GAN so I was just so excited when we were able to generate this and so quickly - one GPU, an hour and a half. If you create your own crappification functions and train this model, you'll' build stuff that nobody's built before. Because nobody else that I know of is doing it this way. So there are huge opportunities, I think. So check this out.
 
-#### Medium Resolution [[1:31:45](https://youtu.be/nWpdkZE2_cc?t=5505)]
+### Medium Resolution [[1:31:45](https://youtu.be/nWpdkZE2_cc?t=5505)]
 
 What we can now do is we can now, instead of starting with our low res, I actually stored another set at size 256 which are called medium res, so let's see what happens if we up size a medium res
 
@@ -1871,7 +1869,7 @@ I actually tried testing this on this. Remember this picture I showed you of a s
 
 ![](lesson7/44.png)
 
-## What we learned in the class so far [[1:36:59](https://youtu.be/nWpdkZE2_cc?t=5819)]
+# What we learned in the class so far [[1:36:59](https://youtu.be/nWpdkZE2_cc?t=5819)]
 
 ![](lesson7/45.png)
 
@@ -1881,7 +1879,7 @@ Then today, we've learned about Res/Dense blocks. We ovbiously learnt a lot abou
 
 So go over these things and make sure that you feel comfortable with each of them. If you've only watched this series once, you definitely won't. People normally watch it three times or so to really understand the detail.
 
-### Recurrent Neural Network (RNN) [[1:38:31](https://youtu.be/nWpdkZE2_cc?t=5911)]
+## Recurrent Neural Network (RNN) [[1:38:31](https://youtu.be/nWpdkZE2_cc?t=5911)]
 
 One thing that doesn't get here is RNNs. So that's the last thing we're going to do. RNNs; I'm going to introduce a little diagrammatic method here to explain to RNNs, and the diagrammatic method, I'll start by showing your basic neural net with a single hidden layer. 
 
@@ -1913,7 +1911,7 @@ Remember, arrows represent layer operations and I removed in this one the specif
 
 Let's go further. What if we wanted to predict word 4 using words 1 and 2 and 3? It's basically the same picture as last time except with one extra input and one extra circle. But I want to point something out which is each time we go from rectangle to circle, we're doing the same thing - we're doing an embedding. Which is just a particular kind of matrix multiply where you have a one hot encoded input. Each time we go from circle to circle, we're basically taking one piece of hidden state (a.k.a activations) and turning it into another set of activations by saying we're now at the next word. Then when we go from circle to triangle, we're doing something else again which is we're saying let's convert the hidden state (i.e. these activations) into an output. So I've colored each of those arrows differently. Each of those arrows should probably use the same weight matrix because it's doing the same thing. So why would you have a different set of embeddings for each word or a different matrix to multiply by to go from this hidden state to this hidden state versus this one? So this is what we're going to build.
 
-### [Human numbers](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson7-human-numbers.ipynb) [[1:43:11](https://youtu.be/nWpdkZE2_cc?t=6191)]
+## [Human numbers](https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson7-human-numbers.ipynb) [[1:43:11](https://youtu.be/nWpdkZE2_cc?t=6191)]
 
 We're now going to jump into human numbers which is lesson7-human-numbers.ipynb. This is a dataset that I created which literally just contains all the numbers from 1 to 9,999 written out in English.
 
@@ -2239,7 +2237,7 @@ Total time: 00:05
 | 5     | 2.039904   | 2.236383   | 0.462020 |
 | 6     | 2.016217   | 2.225322   | 0.462020 |
 
-#### Same thing with a loop [[1:50:48](https://youtu.be/nWpdkZE2_cc?t=6648)]
+### Same thing with a loop [[1:50:48](https://youtu.be/nWpdkZE2_cc?t=6648)]
 
 Let's take this code and recognize it's pretty awful. There's a lot of duplicate code, and as coders, when we see duplicate code, what do we do? We refactor. So we should refactor this into a loop.
 
@@ -2534,7 +2532,7 @@ And we're up to 75%. That's RNNs and the main reason I wanted to show it to you 
 
 For example, the sequence of outputs could be for every word there could be something saying is there something that is sensitive and I want to anonymize or not. So it says private data or not. Or it could be a part of speech tag for that word, or it could be something saying how should that word be formatted, or whatever. These are called **sequence labeling tasks** and so you can use this same approach for pretty much any sequence labeling task. Or you can do what I did in the earlier lesson which is once you finish building your language model, you can throw away the `h_o` bit, and instead pop there a standard classification head, and then you can now do NLP classification which as you saw earlier will give you a state of the art results even on long documents. So this is a super valuable technique, and not remotely magical. 
 
-## What now? [[1:58:59](https://youtu.be/nWpdkZE2_cc?t=7139)]
+# What now? [[1:58:59](https://youtu.be/nWpdkZE2_cc?t=7139)]
 
 ![](lesson7/56.png)
 
@@ -2563,7 +2561,7 @@ A great example is Pierre who's been doing a fantastic job in Brazil of running 
 ![](lesson7/59.png)
 Then come back for part 2 where we'll be looking at all of this interesting stuff. In particular, going deep into the fast.ai code base to understand how did we build it exactly. We will actually go through. As we were building it, we created notebooks of here's where we were at each stage, so we're actually going to see the software development process itself. We'll talk about the process of doing research; how to read academic papers, how to turn math into code. Then a whole bunch of additional types of models that we haven't seen yet. So it'll be kind of like going beyond practical deep learning into actually cutting-edge research.
 
-### Ask Jeremy Anything [[2:05:26](https://youtu.be/nWpdkZE2_cc?t=7526)]
+## Ask Jeremy Anything [[2:05:26](https://youtu.be/nWpdkZE2_cc?t=7526)]
 
 We had an AMA going on online and so we're going to have time for a couple of the highest ranked AMA questions from the community
 
@@ -2584,3 +2582,5 @@ Just code. Yeah, just code all the time. I know it's perfectly possible, I hear 
 Well, like I said, I don't make plans I just piss around so... Our only plan for fast.ai as an organization is to make deep learning accessible as a tool for normal people to use for normal stuff. So as long as we need to code, we failed at that because 99.8% of the world can't code. So the main goal would be to get to a point where it's not a library but it's a piece of software that doesn't require code. It certainly shouldn't require a goddamn lengthy hard working course like this one. So I want to get rid of the course, I want to get rid of the code, I want to make it so you can just do useful stuff quickly and easily. So that's maybe five years? Yeah, maybe longer. 
 
 All right. I hope to see you all back here for part 2. Thank you.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
